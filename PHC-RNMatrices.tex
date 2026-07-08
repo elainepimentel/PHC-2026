@@ -1,11 +1,30 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+% Standardized TikZ configuration
+\tikzset{
+    myblock/.style={
+        rectangle, 
+        draw, 
+        fill=blue!10, 
+        text width=12cm, 
+        align=center, 
+        rounded corners, 
+        minimum height=1.2cm,
+        thick
+    },
+    myline/.style={
+        draw, 
+        thick, 
+        ->, 
+        >=Stealth
+    }
+}
 
 \title{\textbf{Project Proposal: Learning-Guided Semantics for Non-Classical Reasoning (LGS-NCR)}}
 \author{\textbf{Research Track:} Artificial Intelligence \& Automated Theorem Proving}
@@ -16,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-Modern automated theorem proving (ATP) has made monumental leaps by leveraging Satisfiability Modulo Theories (SMT) solvers to reason over non-classical logics via Restricted Non-Deterministic Matrices (RNmatrices). RNmatrices filter out ``unsound'' evaluation rows from non-deterministic matrices (Nmatrices) to construct finite semantic characterizations for highly complex logics—such as da Costa’s paraconsistent $C_n$ hierarchy, propositional intuitionistic logic ($IL_p$), and the normal modal logics of the modal cube (e.g., $S4$). While this framework yields robust decision procedures, it suffers from a combinatorial explosion due to the vast space of admissible rows, non-deterministic valuation choices, and structural elimination criteria. This project proposes a novel hybrid paradigm that embeds Machine Learning (ML) techniques directly into the semantics-driven proof search of RNmatrices. By training graph neural networks (GNNs) and transformer models to predict viable row constraints, prioritize candidate valuations, and anticipate minimal countermodels, the project aims to dramatically prune the search space. Crucially, the underlying SMT-solver back-end preserves absolute soundness and completeness, uniting data-driven adaptive heuristics with formal proof guarantees.
+Modern automated theorem proving (ATP) has made monumental leaps by leveraging Satisfiability Modulo Theories (SMT) solvers to reason over non-classical logics via Restricted Non-Deterministic Matrices (RNmatrices). RNmatrices filter out ``unsound'' evaluation rows from non-deterministic matrices (Nmatrices) to construct finite semantic characterizations for highly complex logics--such as da Costa's paraconsistent $C_n$ hierarchy, propositional intuitionistic logic ($IL_p$), and the normal modal logics of the modal cube (e.g., $S4$). While this framework yields robust decision procedures, it suffers from a combinatorial explosion due to the vast space of admissible rows, non-deterministic valuation choices, and structural elimination criteria. This project proposes a novel hybrid paradigm that embeds Machine Learning (ML) techniques directly into the semantics-driven proof search of RNmatrices. By training graph neural networks (GNNs) and transformer models to predict viable row constraints, prioritize candidate valuations, and anticipate minimal countermodels, the project aims to dramatically prune the search space. Crucially, the underlying SMT-solver back-end preserves absolute soundness and completeness, uniting data-driven adaptive heuristics with formal proof guarantees.
 \end{abstract}
 
 \section{Introduction \& Background}
@@ -46,7 +65,7 @@ While Nmatrices capture many non-classical behaviors, they are occasionally too 
 Recent progress materialized in the automated theorem prover TRiNity, which translates validity problems into a multi-sorted SMT signature containing sorts for truth values (\texttt{Val}), rows (\texttt{Row}), and formula columns (\texttt{Col}). A formula $\alpha$ is valid if and only if an arbitrary row $r_0$ cannot falsify it under the structural matrix constraints ($\Phi_M$) and the logic-specific restriction criteria ($\Phi_F$).
 
 \section{Problem Statement \& Motivation}
-Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like da Costa’s $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
+Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like da Costa's $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
 \begin{enumerate}
     \item \textbf{Combinatorial Row Explosion:} In logics requiring nested or backward-looking existence criteria (such as $IL_p$ and modal $S4$), verifying a valuation necessitates confirming the existence of companion or successor valuations. In SMT-LIB syntax, this translates to heavily quantified formulas ($\forall r . \exists w$) over uninterpreted matrix functions (\texttt{mat}).
     \item \textbf{Blind Valuation Guessing:} SMT solvers rely on generic, logic-agnostic heuristic engines (e.g., CDCL, internal simplex variants, or E-matching for quantifiers). They do not exploit the highly structured semantic layouts inherent to matrix representations.
@@ -58,21 +77,17 @@ We propose a hybrid framework that injects intelligent, data-driven heuristics i
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[nodeDistance=2cm, auto, >=Stealth]
-    % Styles
-    \tikzStyle{block} = [rectangle, draw, fill=blue!10, text width=12cm, text centered, rounded corners, minimum height=1.2cm]
-    \tikzStyle{line} = [draw, thick, ->]
+\begin{tikzpicture}[node distance=1.8cm, auto]
+    % Nodes (explicitly utilizing the corrected 'myblock' style)
+    \node [myblock] (input) {\textbf{Input Non-Classical Formula}};
+    \node [myblock, below=of input] (ai) {\textbf{Deep Neural Heuristic Engine (GNN / Transformer)} \\ - Predicts sound row valuation patterns \\ - Prioritizes promising proof paths \& countermodels};
+    \node [myblock, below=of ai] (trinity) {\textbf{TRiNity Matrix-to-SMT Encoder} \\ Emits multi-sorted SMT-LIB files annotated with AI hints};
+    \node [myblock, below=of trinity] (smt) {\textbf{SMT Back-End Solver (Z3 / CVC5)} \\ Enforces formal constraints \& absolute correctness};
     
-    % Nodes
-    \node [block] (input) {\textbf{Input Non-Classical Formula}};
-    \node [block, below=of input] (ai) {\textbf{Deep Neural Heuristic Engine (GNN / Transformer)} \\ - Predicts sound row valuation patterns \\ - Prioritizes promising proof paths \& countermodels};
-    \node [block, below=of ai] (trinity) {\textbf{TRiNity Matrix-to-SMT Encoder} \\ Emits multi-sorted SMT-LIB files annotated with AI hints};
-    \node [block, below=of trinity] (smt) {\textbf{SMT Back-End Solver (Z3 / CVC5)} \\ Enforces formal constraints \& absolute correctness};
-    
-    % Paths
-    \path [line] (input) -- (ai);
-    \path [line] (ai) -- node [right, font=\small] {Neural Guidance (Weights \& Hints)} (trinity);
-    \path [line] (trinity) -- (smt);
+    % Paths (explicitly utilizing the corrected 'myline' style)
+    \path [myline] (input) -- (ai);
+    \path [myline] (ai) -- node [right, font=\small, text width=6cm, align=left] {Neural Guidance \\ (Weights \& Hints)} (trinity);
+    \path [myline] (trinity) -- (smt);
 \end{tikzpicture}
 \caption{Flow diagram of the learning-guided semantics-driven theorem proving framework.}
 \label{fig:arch}
@@ -99,7 +114,7 @@ The performance of the learning-guided framework will be measured quantitatively
 \begin{enumerate}
     \item \textbf{The Paraconsistent Hierarchy ($C_n$):} Benchmarking on deep nested depth contradictions ($c_k(\alpha)$). We will assess if the AI can predict the exact point where the ``classical core'' triggers explosion ($k \ge n$), thereby skipping unnecessary matrix searches.
     \item \textbf{Intuitionistic Logic ($IL_p$):} Evaluation on the intuitionistic ILTP library. The target metric is the time reduction in validating the localized existence criterion for implication and negation ($\forall v \exists w$).
-    \item \textbf{The Modal Cube ($S4$):} Evaluating performance on modal formulas that test iterated necessity ($\Box\Box\alpha \leftrightarrow \Box\alpha$). The framework will be optimized to efficiently navigate Gr\"{a}tz’s partial level valuations.
+    \item \textbf{The Modal Cube ($S4$):} Evaluating performance on modal formulas that test iterated necessity ($\Box\Box\alpha \leftrightarrow \Box\alpha$). The framework will be optimized to efficiently navigate Gr\"{a}tz's partial level valuations.
 \end{enumerate}
 
 Success will be defined as an increase in the number of solved problems within a standard 300-second timeout window, combined with a reduction in back-tracking steps inside the SMT engine compared to the baseline TRiNity prover.
