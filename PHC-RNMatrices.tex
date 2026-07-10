@@ -4,6 +4,7 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage[official]{eurosym}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
 
 % Standardized TikZ configuration
@@ -26,6 +27,53 @@
     }
 }
 
+\def\myperiod{.}
+
+\def\halwebref#1{\href{https://hal.inria.fr/hal-#1}%
+     {{https://hal.inria.fr/hal-#1}}}
+
+\def\webref#1{\href{#1}%
+     {{#1}}}
+
+\newcommand{\copubsitemref}[4]{
+  \item#1: 
+  {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
+  \\{\small\tt\webref{#4}}
+}
+
+\newcommand{\copubsitemhalref}[4]{
+  \item#1: 
+  {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
+  \\{\small\tt\halwebref{#4}}
+}
+\newcommand{\copubsitemfullref}[5]{
+  \item#1: 
+  {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
+  \\{\small\tt\webref{#4}}
+  \\{\small\tt\halwebref{#5}}
+}
+
+\newcommand{\TODO}[1]{{\color{red}TODO: #1}}
+
+\usepackage{marginnote}
+\newcommand{\matteo}[1]{{\color{magenta}#1}}
+\newcommand{\mmatteo}[1]{\marginpar{\small{\color{magenta}M: #1}}}
+
+\newcommand{\memb}[4]{\item #1, \emph{#2}, {\tt #3}\\ #4}
+\newcommand{\fmemb}[4]{\item #1, \emph{#2}, {\tt #3}}
+\newcommand{\sacaddr}{1 rue Honor\'{e} d'Estienne d'Orves,
+%B‰timent Alan Turin,
+%Campus de l'\'{e}cole Polytechnique,
+Inria \& \'{E}cole Polytechnique,
+91120 Palaiseau,
+France}
+\newcommand{\sacaddrb}{Inria Saclay, 1 rue Honor\'{e} d'Estienne d'Orves,
+B\^{a}timent Alan Turin,
+Campus de l'\'{E}cole Polytechnique,
+%Inria \& \'{e}cole Polytechnique,
+91120 Palaiseau,
+France}
+
 \title{\textbf{Project Proposal: Learning-Guided Semantics for Non-Classical Reasoning (LGS-NCR)}}
 \author{\textbf{Research Track:} Artificial Intelligence \& Automated Theorem Proving}
 \date{\today}
@@ -35,36 +83,98 @@
 \maketitle
 
 \begin{abstract}
-Modern automated theorem proving (ATP) has made monumental leaps by leveraging Satisfiability Modulo Theories (SMT) solvers to reason over non-classical logics via Restricted Non-Deterministic Matrices (RNmatrices). RNmatrices filter out ``unsound'' evaluation rows from non-deterministic matrices (Nmatrices) to construct finite semantic characterizations for highly complex logics--such as da Costa's paraconsistent $C_n$ hierarchy, propositional intuitionistic logic ($IL_p$), and the normal modal logics of the modal cube (e.g., $S4$). While this framework yields robust decision procedures, it suffers from a combinatorial explosion due to the vast space of admissible rows, non-deterministic valuation choices, and structural elimination criteria. This project proposes a novel hybrid paradigm that embeds Machine Learning (ML) techniques directly into the semantics-driven proof search of RNmatrices. The project aims to dramatically prune the search space, by training graph neural networks (GNNs) and transformer models to predict viable row constraints, prioritize candidate valuations, and anticipate minimal countermodels. Crucially, the underlying SMT-solver back-end preserves absolute soundness and completeness, uniting data-driven adaptive heuristics with formal proof guarantees.
+The principle of truth-functionality, central to classical and many-valued logics, states that the truth-value of a complex formula is uniquely determined by the truth-values of its subformulas. This makes truth tables both easy to understand and implement, enabling SAT solvers to crack remarkably hard problems. But this tidy picture cannot be obtained when crossing the boundary of classicality, reaching e.g., modal logics. Non-deterministic matrices (Nmatrices) generalise ordinary matrices by allowing connectives to return a set of possible truth values rather than a unique one, thereby increasing expressive power. Restricted non-deterministic matrices (RNmatrices) further refine this framework by imposing constraints on the rows of Nmatrices, filtering out ``unsound'' rows and retaining only ``valid'' ones. This yields a more expressive semantic framework that has been successfully used to provide sound and complete semantics for a wide range of logics, including paraconsistent, intuitionistic, and modal logics. Recently,  automated theorem provers (ATP) based on RNmatrices were developed by encoding their semantics as Satisfiability Modulo Theories (SMT) problems. The resulting provers decide validity and construct countermodels, achieving state-of-the-art performance for paraconsistent logics and competitive results for intuitionistic and modal logics. While this framework yields robust decision procedures, it still suffers from a combinatorial explosion due to the vast space of admissible rows, non-deterministic valuation choices, and structural elimination criteria. This project proposes a novel hybrid paradigm that embeds Machine Learning (ML) techniques directly into the semantics-driven proof search of RNmatrices. The project aims to dramatically prune the search space, by training graph neural networks (GNNs) and transformer models to predict viable row constraints, prioritize candidate valuations, and anticipate minimal countermodels. Crucially, the underlying SMT-solver back-end preserves absolute soundness and completeness, uniting data-driven adaptive heuristics with formal proof guarantees.
 \end{abstract}
 
-\section{Introduction \& Background}
+\subsection*{1. Presentation of the teams}
 
-\subsection{The Challenge of Truth-Functionality in Non-Classical Logics}
+\subsubsection*{a. French Team}
+
+The French Team consists of members of the {\sc Partout} project which is joint between Inria Saclay and LIX (UMR 7161) at \'{E}cole Polytechnique. This team brings extensive expertise in all areas of logic, formal verification, and proof theory, which is crucial for the success of the project.
+
+\begin{itemize}
+\fmemb{PI: Kaustuv Chaudhuri}{Charg\'{e} de recherche}{kaustuv@chaudhuri.info}{\sacaddr}
+
+\fmemb{Dale Miller}{Directeur de recherche}{dale.miller@inria.fr}{\sacaddr}
+
+\fmemb{Lutz Stra\ss burger}{Directeur de recherche}{lutz@lix.polytechnique.fr}{\sacaddr} 
+
+\fmemb{Beniamino Accattoli}{Charg\'{e} de recherche}{beniamino.accattoli@inria.fr}{\sacaddr}
+
+\fmemb{Victoria Barrett}{Postdoc}{victoria.barrett@inria.fr}{\sacaddr}
+
+\fmemb{Arunava Gantait}{PhD student}{Arunava.Gantait@lix.polytechnique.fr}{\sacaddr}
+
+\end{itemize}
+The postal address for all team members is:\\[.5ex] \sacaddrb.
+
+
+\subsubsection*{b. British Team}
+
+The British team is located at University College London, and it comprises experts in logic and verification, as well as machine learning and proof theory. 
+\begin{itemize}
+
+\fmemb{PI: Elaine Pimentel}{Professor of logic and Computation}{e.pimentel@ucl.ac.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\fmemb{David Pym}{Professor of Information, Logic, and Security}{d.pym@ucl.ac.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\fmemb{Victor Barroso Nascimento}{Postdoc}{victorluisbn@gmail.com}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\fmemb{Katya Piotrovskaya}{PhD student}{kate.piotrovskaya.21@ucl.ac.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\fmemb{Joaquim Torres Waddington}{PhD student}{joaquim.waddington.24@ucl.ac.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\fmemb{Arghya Chackrabarty}{PhD student}{arghya.chakrabarty.20@ucl.ac.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
+\end{itemize}
+%
+The postal address for all members of the British team is:\\[.75ex]
+66-72 Gower St., University College London,
+WC1E 6EA London, UK
+
+
+
+%\TODO{make smooth; maybe move after the project}
+
+\subsection*{2. The Research Project}
+
+\paragraph{State of the Art:}
+
+%\subsection{The Challenge of Truth-Functionality in Non-Classical Logics}
 In classical propositional logic, truth-functionality ensures that the truth value of a complex formula is uniquely determined by its subformulas. This structural rigidity underpins modern SAT and SMT technologies. However, when moving beyond classical bounds into constructive or modal realms, finite truth-functionality collapses. Kurt G\"{o}del proved in 1932 that no finite-valued deterministic matrix can faithfully characterize propositional intuitionistic logic ($IL_p$). Similarly, James Dugundji demonstrated in 1940 that finite truth-functionality cannot preserve modal interpretations of ``qualified truth'' across the modal cube.
 
 To overcome these constraints without resorting to infinite-valued structures, Avron and Lev introduced Non-Deterministic Matrices (Nmatrices), substituting truth functions with multifunctions that map tuples of values to a set of possible values.
 
-\subsection{From Nmatrices to RNmatrices}
-While Nmatrices capture many non-classical behaviors, they are occasionally too permissive. For instance, blind non-determinism fails to model the strict proof-theoretic evolution of intuitionistic logic or the rule of necessitation in modal logic, generating invalid matrix rows that break soundness. Restricted Non-Deterministic Matrices (RNmatrices) resolve this by enforcing global first-order or modal constraints over the set of allowed valuations ($\mathfrak{F} \subseteq Val(\mathbb{M})$), filtering out non-deterministic choices that do not align with the target deductive system. Table~\ref{tab:logics} summarizes key semantic components across target formalisms.
+%\subsection{From Nmatrices to RNmatrices}
+While Nmatrices capture many non-classical behaviors, they are occasionally too permissive. For instance, blind non-determinism fails to model the strict proof-theoretic evolution of intuitionistic logic or the rule of necessitation in modal logic, generating invalid matrix rows that break soundness. Restricted Non-Deterministic Matrices (RNmatrices) resolve this by enforcing global first-order or modal constraints over the set of allowed valuations ($\mathfrak{F} \subseteq Val(\mathbb{M})$), filtering out non-deterministic choices that do not align with the target deductive system. 
 
-\begin{table}[htbp]
-\centering
-\caption{Core Languages and Truth-Value Dimensions in RNmatrix Semantics}
-\label{tab:logics}
-\begin{tabular}{llll}
-\toprule
-\textbf{Logic} & \textbf{Core Language Elements} & \textbf{Truth Values ($\mathcal{V}$)} & \textbf{Designated Values ($\mathcal{D}$)} \\ \midrule
-\textbf{Modal $S4$} & $p, \perp, \top, \neg, \Box, \rightarrow, \wedge, \vee$ & $\{0, 1, 2\}$ & $\{1, 2\}$ \\
-\textbf{Intuitionistic $IL_p$} & $p, \perp, \top, \neg, \rightarrow, \wedge, \vee$ & $\{T, F\}$ & $\{T\}$ \\
-\textbf{Paraconsistent $C_n$} & $p, \neg, \rightarrow, \wedge, \vee$ & $\{T_n, t_0^n, \dots, t_{n-1}^n, F_n\}$ & $\mathcal{V}_{C_n} \setminus \{F_n\}$ \\ \bottomrule
-\end{tabular}
-\end{table}
+%Table~\ref{tab:logics} summarizes key semantic components across target formalisms.
+%
+%\begin{table}[htbp]
+%\centering
+%\caption{Core Languages and Truth-Value Dimensions in RNmatrix Semantics}
+%\label{tab:logics}
+%\begin{tabular}{llll}
+%\toprule
+%\textbf{Logic} & \textbf{Core Language Elements} & \textbf{Truth Values ($\mathcal{V}$)} & \textbf{Designated Values ($\mathcal{D}$)} \\ \midrule
+%\textbf{Modal $S4$} & $p, \perp, \top, \neg, \Box, \rightarrow, \wedge, \vee$ & $\{0, 1, 2\}$ & $\{1, 2\}$ \\
+%\textbf{Intuitionistic $IL_p$} & $p, \perp, \top, \neg, \rightarrow, \wedge, \vee$ & $\{T, F\}$ & $\{T\}$ \\
+%\textbf{Paraconsistent $C_n$} & $p, \neg, \rightarrow, \wedge, \vee$ & $\{T_n, t_0^n, \dots, t_{n-1}^n, F_n\}$ & $\mathcal{V}_{C_n} \setminus \{F_n\}$ \\ \bottomrule
+%\end{tabular}
+%\end{table}
 
-\subsection{The TRiNity SMT Framework}
+%\subsection{The TRiNity SMT Framework}
 Recent progress materialized in the automated theorem prover TRiNity, which translates validity problems into a multi-sorted SMT signature containing sorts for truth values (\texttt{Val}), rows (\texttt{Row}), and formula columns (\texttt{Col}). A formula $\alpha$ is valid if and only if an arbitrary row $r_0$ cannot falsify it under the structural matrix constraints ($\Phi_M$) and the logic-specific restriction criteria ($\Phi_F$).
 
-\section{Problem Statement \& Motivation}
+%\section{Problem Statement \& Motivation}
+
+\paragraph{Research programme:}
 Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like da Costa's $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
 \begin{enumerate}
     \item \textbf{Combinatorial Row Explosion:} In logics requiring nested or backward-looking existence criteria (such as $IL_p$ and modal $S4$), verifying a valuation necessitates confirming the existence of companion or successor valuations. In SMT-LIB syntax, this translates to heavily quantified formulas ($\forall r . \exists w$) over uninterpreted matrix functions (\texttt{mat}).
@@ -72,7 +182,7 @@ Although the SMT-encoding methodology outperforms standard tableau-based systems
     \item \textbf{Countermodel Inflation:} When a formula is invalid, the SMT solver searches for a countermodel. Without domain guidance, the constructed countermodels are frequently bloated and suboptimal, obscuring the core structural reasons for invalidity.
 \end{enumerate}
 
-\section{Proposed Methodology: The Hybrid AI-SMT Framework}
+%\section{Proposed Methodology: The Hybrid AI-SMT Framework}
 We propose a hybrid framework that injects intelligent, data-driven heuristics into the RNmatrix execution pathway while preserving the exact completeness and correctness of the SMT layer. Figure~\ref{fig:arch} illustrates the system architecture.
 
 \begin{figure}[htbp]
@@ -93,23 +203,23 @@ We propose a hybrid framework that injects intelligent, data-driven heuristics i
 \label{fig:arch}
 \end{figure}
 
-\subsection{Neural Structure Encoding}
+%\subsection{Neural Structure Encoding}
 Logical formulas will be parsed as Heterogeneous Graph structures where subformula dependencies represent edges, and operators ($\Box, \neg, \rightarrow$) represent node types. Graph Neural Networks (GNNs) will learn low-dimensional vector representations of these formulas. In parallel, a Transformer model will sequence the subformula tokens to learn global contextual boundaries.
 
-\subsection{Semantic Valuation \& Row Prioritization}
+%\subsection{Semantic Valuation \& Row Prioritization}
 Instead of forcing the SMT solver to blindly evaluate the uninterpreted function \texttt{mat(Row, Col)}, the trained model outputs a probability distribution over the matrix sort space:
 \begin{itemize}
     \item \textbf{Row Selection:} Predicts which rows in a multi-row evaluation (e.g., Kripke-like accessibility pathways in $IL_p$ or $S4$) are vital to trigger a contradiction or satisfy an assertion.
     \item \textbf{Valuation Biasing:} Injects SMT \texttt{set-info} or branch-fuzzing weights that bias the solver toward evaluating designated ($2, 1, T$) or non-designated ($0, F, F_n$) values based on structural formula features.
 \end{itemize}
 
-\subsection{Predictive Countermodel Generation}
+%\subsection{Predictive Countermodel Generation}
 For invalid formulas, the neural model will be optimized using a customized loss function to output a partial matrix assignment that minimizes the required valuation cardinality. The SMT solver uses this partial matrix as a ``warm-start'' hint, converting a complex synthesis task into an efficient checking task.
 
-\subsection{Soundness and Completeness Preservation}
+%\subsection{Soundness and Completeness Preservation}
 Crucially, AI predictions are treated solely as soft constraints (search biases, ordering heuristics, or initial assignments). If the neural model makes an incorrect inference, the underlying SMT core ensures it is safely bypassed, guaranteeing that the prover remains fully sound and complete.
 
-\section{Evaluation Plan \& Benchmarking}
+%\section{Evaluation Plan \& Benchmarking}
 The performance of the learning-guided framework will be measured quantitatively across three execution domains:
 \begin{enumerate}
     \item \textbf{The Paraconsistent Hierarchy ($C_n$):} Benchmarking on deep nested depth contradictions ($c_k(\alpha)$). We will assess if the AI can predict the exact point where the ``classical core'' triggers explosion ($k \ge n$), thereby skipping unnecessary matrix searches.
@@ -119,7 +229,158 @@ The performance of the learning-guided framework will be measured quantitatively
 
 Success will be defined as an increase in the number of solved problems within a standard 300-second timeout window, combined with a reduction in back-tracking steps inside the SMT engine compared to the baseline TRiNity prover.
 
-\section{Expected Impact \& Future Work}
+%\section{Expected Impact \& Future Work}
 By combining data-driven predictive power with the formal robustness of SMT-encoded RNmatrices, this project introduces a scalable approach to automated non-classical reasoning. Beyond enhancing proving speeds, the framework will automate the discovery of minimal semantic countermodels, rendering them highly interpretable for computer scientists and logicians. Future iterations will seek to expand this learning-guided semantic paradigm to non-propositional extensions, first-order modal systems, and dynamic epistemic frameworks.
 
+\paragraph{Work packages:}
+To complete Step~1 above means to extend the basic logic of Lambek  with additional operators to expand its modelling abilities and allow to handle various linguistic phenomena and ambiguities. For this, the following tasks have to be completed.
+
+
+
+\begin{enumerate}
+\item[\bf WP~1] 
+
+\end{enumerate}
+
+\paragraph*{Historic Context of the Collaboration:}
+The longstanding collaboration between the PARTOUT group and the PPLV team at UCL dates back to the early 2000s, when Dale Miller, one of the founders of Parsifal (the predecessor of PARTOUT) mentored Elaine Pimentel. At that time, Pimentel was an Assistant/Associate Professor at UFMG and later became a Full Professor at UFRN in Brazil. She joined UCL in 2022, where she currently holds the position of Professor of Logic and Computation.
+
+Since those early years, the collaboration between Parsifal/PARTOUT and Pimentel has remained active and productive. Between 2002 and 2012, Lutz Stra\ss burger, Alexis Saurin, and Dale Miller, members of the Parsifal group, made five research visits to UFMG and UFRN, while Brazilian researchers regularly visited France, typically for one- to two-month stays each year.
+
+In 2018, Pimentel spent part of her sabbatical year at Inria Saclay, further strengthening the academic ties between the teams. During this period, her collaboration with Chaudhuri began, culminating in a particularly significant publication~\cite{chaudhuri19mscs}, a joint paper written in honor of Dale Millers 60th birthday.
+
+This enduring collaboration is evidenced by several joint publications and continues to thrive through the joint organization of major international seminars, including the BANFF (2025) and Dagstuhl (2024) meetings on \emph{Proof Representations: From Theory to Applications} (co-organized with Lutz Stra\ss burger).
+
+
+In addition, active participation as jury member or rapporteur in several Parsifal/PARTOUT PhD defences highlights the depth and continuity of these collaborations:
+%
+\begin{itemize}
+\item \'{E}milie Grienenberger -- Inria Paris-Saclay (02/2025)
+\item Jui-Hsuan (Ray) Wu -- \'{E}cole Polytechnique (12/2024)
+\item Marianela Morales -- \'{E}cole Polytechnique (01/2023) -- reviewer
+\item Sonia Marin -- \'{E}cole Polytechnique (01/2023, 01/2018)
+\item Vivek Nigam -- \'{E}cole Polytechnique (01/2023, 09/2009)
+\end{itemize}
+
+Collectively, these activities demonstrate the strength, longevity, and productivity of the research partnership between PARTOUT and PPLV.
+
+
+\paragraph{Plans for continued collaboration and funding prospects after the project:}
+
+%, notably a potential Horizon Europe application}
+
+The project is intended to create a critical mass 
+
+necessary to launch a larger program under Horizon Europe. We plan to organise workshops and invite external experts to eventually enlarge the consortium. A successful outcome of this project will allow us to attract further funding for Steps~2 and~3 of the research programme outlined above, and
+in the long term we intend to apply our methods to ...
+
+This initiative aims at building a strong foundation and demonstrating the potential impact,  and to secure further funding and support for extensive research and development efforts within the Horizon Europe framework.
+
+
+\paragraph{Long term outcomes of the project:} %%, including potential societal and industrial outcomes}
+
+
+%When the output of an AI can be formally verified it is more useful for all applications. then also critcial decision can be taken by AI. examples: ...
+
+\paragraph*{Risk Analysis.}
+
+A common risk associated with  logics of language is overgeneration. 
+
+
+
+\section*{Annexes}
+
+\subsection*{Calendar for the project}
+
+\begin{itemize}
+    \item Start date: 1 September 2026
+    \item Duration 16 months
+    \item Main milestones: We expect each of the four work packages to take about 3-4 months, giving us room to adjust in case of unforeseen difficulties. The last two month are reserved for writing up our result in form of publications in prestigious conferences and journals.
+    \begin{itemize}
+        \item  November 2026: finish WP1
+        \item March 2027: finish WP2
+        \item June 2027: finish WP3
+        \item October 2027: finish WP4
+    \end{itemize}
+\end{itemize}
+
+
+\subsection*{Financial details}
+
+\subsubsection*{a. Planned budget}
+
+\par
+%Observe that: ``The funds available in this call are provided by the French government and will be allocated to French researchers. Although this funding is limited to French researchers, only applications jointly submitted by French and British PIs to the French Steering Committee are declared eligible. British researchers will have to apply to the British call, which will be launched separately from the French one.''
+
+%Hence the budget should be only for the French side.
+
+\smallskip
+
+%FRANCE
+
+\begin{tabular}{|l|r|l|}
+\hline
+Type of expense & Amount (in \euro) & Description \\
+\hline
+Travel & 21 800  & mutual visits and conference attendance\\
+Equipment & 6 000 & 4 laptops \\
+Essential consumable materials & 200 & \\
+Documentation &  - & \\
+Publication & 2 000 & \\
+%Field work (if relevant) & & \\
+Research grants & - & \\ %%two one-month research visits abroad\\
+Other & 11 000 & workshop organisation\\
+\hline
+\bf Total & \bf 41 000 & \\
+\hline
+\end{tabular}
+
+
+\bigskip
+
+\subsubsection*{b. Justification of expenses}
+
+\begin{itemize}
+    \item 
+The success of the project relies on making use of the joint expertise of the two teams. For this, mutual visits are crucial and form therefore most of the budget will be used for covering travel costs.
+We encourage in particular our PhD students to take part in these visits.
+
+We estimate the cost for one visit of one person for one week to be around \euro1400 (\euro400 for train tickets and 5~$\times$~\euro200 for accommodation and food), and we plan around 6 visits (2 permanent researchers and 4 PhD student from France to UK and 6 visits from UK to France, altogether 12~$\times$~\euro1400~=~\euro16800. Additionally we plan for two attendances at major conferences 
+for PhD students. For this we estimate a cost of \euro2500 each (\euro 800 attendance fee, \euro 700 transportation costs, 5~$\times$~\euro200 accommodation and food). This gives a total of \euro16800~+~2~$\times$~\euro2500~=~\euro21800.
+
+\item 
+We also estimate the need of 4 new laptops with high computation power to run experiments with LLMs (around \euro1500 each). 
+
+\item 
+For our daily work, we also need small consumable materials, like whiteboard markers and erasers, paper and pens, as wells as microphones and cameras for video conferences. We estimate around \euro200 for this.
+
+\item 
+Recently, some conferences introduced extra publication fees. To accommodate for that, we budget \euro2000. Apart from that, we only publish in journals that do not charge for publication, and all our publications are made freely available on HAL.
+
+%\mmatteo{if you have budget to play/possible according to the call, add conference inscription fees as ``publication fees'' since some conferences require to have at least one author to pay the inscription fees}
+
+
+%\item We plan to allow two PhD students (one from each team) to stay for one month abroad and visit the other team. 
+
+\item Finally, we plan to organise two workshops, one in France and one in the UK. The required funding includes travel costs of \euro8400 for inviting external experts (two per workshop, for app.~\euro1500 for an international return air ticket + \euro600 for 3 nights of hotel), 
+%accommodation per speaker per workshop = £3000 + £1200 = £4200) 
+and costs of \euro2600 for providing refreshments  (for two days for each workshop and for about 30 participants: two  coffee breaks per day of workshop, app.~\euro90 per coffee break, and lunches, app.~\euro450 per lunch break, giving a total of \euro650 per workshop day). We don't need to cover fees for renting lecture halls, as those are provided by our universities.
+\end{itemize}
+
+
+\subsection*{Publications of PIs}
+
+\subsubsection*{a. Kaustuv Chaudhuri (PI of the French team)}
+
+\begin{enumerate}
+
+\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{04569184}
+\end{enumerate}
+
+\subsubsection*{a. Elaine Pimentel (PI of the British team)}
+
+\begin{enumerate}
+
+\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{04569184}
+\end{enumerate}
 \end{document}
