@@ -76,7 +76,7 @@ France}
 
 \title{\textbf{Project Proposal: Learning-Guided Semantics for Non-Classical Reasoning (LGS-NCR)}}
 \author{\textbf{Research Track:} Artificial Intelligence}
-\date{\today}
+\date{\vspace{-5ex}}
 
 \begin{document}
 
@@ -135,6 +135,9 @@ WC1E 6EA London, UK}
 \fmemb{Katya Piotrovskaya}{PhD student}{kate.piotrovskaya.21@ucl.ac.uk}{66-72 Gower St., University College London,
 WC1E 6EA London, UK}
 
+\fmemb{Maria Os\'{o}rio}{PhD student}{ucacmo0@ac.ucl.uk}{66-72 Gower St., University College London,
+WC1E 6EA London, UK}
+
 \fmemb{Joaquim Torres Waddington}{PhD student}{joaquim.waddington.24@ucl.ac.uk}{66-72 Gower St., University College London,
 WC1E 6EA London, UK}
 
@@ -156,12 +159,12 @@ WC1E 6EA London, UK
 \paragraph{State of the Art:}
 
 %\subsection{The Challenge of Truth-Functionality in Non-Classical Logics}
-In classical propositional logic, truth-functionality ensures that the truth value of a complex formula is uniquely determined by its subformulas. This structural rigidity underpins modern SAT and SMT technologies. However, when moving beyond classical bounds into constructive or modal realms, finite truth-functionality collapses. Kurt G\"{o}del proved in 1932 that no finite-valued deterministic matrix can faithfully characterize propositional intuitionistic logic ($IL_p$). Similarly, James Dugundji demonstrated in 1940 that finite truth-functionality cannot preserve modal interpretations of ``qualified truth'' across the modal cube.
+In classical propositional logic, truth-functionality ensures that the truth value of a complex formula is uniquely determined by its subformulas. This structural rigidity underpins modern SAT and SMT technologies. However, when moving beyond classical bounds into constructive or modal realms, finite truth-functionality collapses. G\"{o}del proved in 1932 that no finite-valued deterministic matrix can faithfully characterize propositional intuitionistic logic ($IL_p$). Similarly, Dugundji demonstrated in 1940 that finite truth-functionality cannot preserve modal interpretations of ``qualified truth'' across the modal cube.
 
 To overcome these constraints without resorting to infinite-valued structures, Avron and Lev introduced Non-Deterministic Matrices (Nmatrices), substituting truth functions with multifunctions that map tuples of values to a set of possible values.
 
 %\subsection{From Nmatrices to RNmatrices}
-While Nmatrices capture many non-classical behaviors, they are occasionally too permissive. For instance, blind non-determinism fails to model the strict proof-theoretic evolution of intuitionistic logic or the rule of necessitation in modal logic, generating invalid matrix rows that break soundness. Restricted Non-Deterministic Matrices (RNmatrices) resolve this by enforcing global first-order or modal constraints over the set of allowed valuations ($\mathfrak{F} \subseteq Val(\mathbb{M})$), filtering out non-deterministic choices that do not align with the target deductive system. 
+While Nmatrices capture many non-classical behaviors, they are occasionally too permissive. For instance, blind non-determinism fails to model the strict proof-theoretic evolution of intuitionistic logic or the rule of necessitation in modal logic, generating invalid matrix rows that break soundness. Restricted Non-Deterministic Matrices (RNmatrices) resolve this by enforcing global first-order or modal constraints over the set of allowed valuations, filtering out non-deterministic choices that do not align with the target deductive system\footnote{R. R. Leme, C. Olarte, E. Pimentel and M. E. Coniglio, {\em The Modal Cube Revisited: Semantics without Worlds}, TABLEAUX 2025.}. 
 
 %Table~\ref{tab:logics} summarizes key semantic components across target formalisms.
 %
@@ -179,12 +182,12 @@ While Nmatrices capture many non-classical behaviors, they are occasionally too 
 %\end{table}
 
 %\subsection{The TRiNity SMT Framework}
-Recent progress materialized in the automated theorem prover TRiNity, which translates validity problems into a multi-sorted SMT signature containing sorts for truth values (\texttt{Val}), rows (\texttt{Row}), and formula columns (\texttt{Col}). A formula $\alpha$ is valid if and only if an arbitrary row $r_0$ cannot falsify it under the structural matrix constraints ($\Phi_M$) and the logic-specific restriction criteria ($\Phi_F$).
+Recent progress materialized in the automated theorem prover TRiNity\footnote{R. R. Leme, C. Olarte, E. Pimentel, {\em Efficient Decision Procedures for RNmatrix Semantics}, LSFA 2026.}, which translates validity problems into a multi-sorted SMT signature containing sorts for truth values (\texttt{Val}), rows (\texttt{Row}), and formula columns (\texttt{Col}). A formula $\alpha$ is valid if and only if an arbitrary row $r_0$ cannot falsify it under the structural matrix constraints and the logic-specific restriction criteria.
 
 %\section{Problem Statement \& Motivation}
 
 \paragraph{Research programme:}
-Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like da Costa's $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
+Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like paraconsistent da Costa's $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
 \begin{enumerate}
     \item \textbf{Combinatorial Row Explosion:} In logics requiring nested or backward-looking existence criteria (such as $IL_p$ and modal $S4$), verifying a valuation necessitates confirming the existence of companion or successor valuations. In SMT-LIB syntax, this translates to heavily quantified formulas ($\forall r . \exists w$) over uninterpreted matrix functions (\texttt{mat}).
     \item \textbf{Blind Valuation Guessing:} SMT solvers rely on generic, logic-agnostic heuristic engines (e.g., CDCL, internal simplex variants, or E-matching for quantifiers). They do not exploit the highly structured semantic layouts inherent to matrix representations.
@@ -192,26 +195,23 @@ Although the SMT-encoding methodology outperforms standard tableau-based systems
 \end{enumerate}
 
 %\section{Proposed Methodology: The Hybrid AI-SMT Framework}
-We propose a hybrid framework that injects intelligent, data-driven heuristics into the RNmatrix execution pathway while preserving the exact completeness and correctness of the SMT layer. Figure~\ref{fig:arch} illustrates the system architecture.
+We propose a hybrid framework that injects intelligent, data-driven heuristics into the RNmatrix execution pathway while preserving the exact completeness and correctness of the SMT layer. 
 
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[node distance=1.8cm, auto]
-    % Nodes (explicitly utilizing the corrected 'myblock' style)
-    \node [myblock] (input) {\textbf{Input Non-Classical Formula}};
-    \node [myblock, below=of input] (ai) {\textbf{Deep Neural Heuristic Engine (GNN / Transformer)} \\ - Predicts sound row valuation patterns \\ - Prioritizes promising proof paths \& countermodels};
-    \node [myblock, below=of ai] (trinity) {\textbf{TRiNity Matrix-to-SMT Encoder} \\ Emits multi-sorted SMT-LIB files annotated with AI hints};
-    \node [myblock, below=of trinity] (smt) {\textbf{SMT Back-End Solver (Z3 / CVC5)} \\ Enforces formal constraints \& absolute correctness};
-    
-    % Paths (explicitly utilizing the corrected 'myline' style)
-    \path [myline] (input) -- (ai);
-    \path [myline] (ai) -- node [right, font=\small, text width=6cm, align=left] {Neural Guidance \\ (Weights \& Hints)} (trinity);
-    \path [myline] (trinity) -- (smt);
-\end{tikzpicture}
-\caption{Flow diagram of the learning-guided semantics-driven theorem proving framework.}
-\label{fig:arch}
-\end{figure}
-
+%The schema below illustrates the system architecture.
+%\begin{center}
+%\begin{tikzpicture}[node distance=1.8cm, auto]
+%    % Nodes (explicitly utilizing the corrected 'myblock' style)
+%    \node [myblock] (input) {\textbf{Input Non-Classical Formula}};
+%    \node [myblock, below=of input] (ai) {\textbf{Deep Neural Heuristic Engine (GNN / Transformer)} \\ - Predicts sound row valuation patterns \\ - Prioritizes promising proof paths \& countermodels};
+%    \node [myblock, below=of ai] (trinity) {\textbf{TRiNity Matrix-to-SMT Encoder} \\ Emits multi-sorted SMT-LIB files annotated with AI hints};
+%    \node [myblock, below=of trinity] (smt) {\textbf{SMT Back-End Solver (Z3 / CVC5)} \\ Enforces formal constraints \& absolute correctness};
+%    
+%    % Paths (explicitly utilizing the corrected 'myline' style)
+%    \path [myline] (input) -- (ai);
+%    \path [myline] (ai) -- node [right, font=\small, text width=6cm, align=left] {Neural Guidance \\ (Weights \& Hints)} (trinity);
+%    \path [myline] (trinity) -- (smt);
+%\end{tikzpicture}
+%\end{center}
 %\subsection{Neural Structure Encoding}
 Logical formulas will be parsed as Heterogeneous Graph structures where subformula dependencies represent edges, and operators ($\Box, \neg, \rightarrow$) represent node types. Graph Neural Networks (GNNs) will learn low-dimensional vector representations of these formulas. In parallel, a Transformer model will sequence the subformula tokens to learn global contextual boundaries.
 
@@ -219,7 +219,7 @@ Logical formulas will be parsed as Heterogeneous Graph structures where subformu
 Instead of forcing the SMT solver to blindly evaluate the uninterpreted function \texttt{mat(Row, Col)}, the trained model outputs a probability distribution over the matrix sort space:
 \begin{itemize}
     \item \textbf{Row Selection:} Predicts which rows in a multi-row evaluation (e.g., Kripke-like accessibility pathways in $IL_p$ or $S4$) are vital to trigger a contradiction or satisfy an assertion.
-    \item \textbf{Valuation Biasing:} Injects SMT \texttt{set-info} or branch-fuzzing weights that bias the solver toward evaluating designated ($2, 1, T$) or non-designated ($0, F, F_n$) values based on structural formula features.
+    \item \textbf{Valuation Biasing:} Injects SMT \texttt{set-info} or branch-fuzzing weights that bias the solver toward evaluating designated or non-designated values based on structural formula features.
 \end{itemize}
 
 %\subsection{Predictive Countermodel Generation}
@@ -239,17 +239,7 @@ The performance of the learning-guided framework will be measured quantitatively
 Success will be defined as an increase in the number of solved problems within a standard 300-second timeout window, combined with a reduction in back-tracking steps inside the SMT engine compared to the baseline TRiNity prover.
 
 %\section{Expected Impact \& Future Work}
-By combining data-driven predictive power with the formal robustness of SMT-encoded RNmatrices, this project introduces a scalable approach to automated non-classical reasoning. Beyond enhancing proving speeds, the framework will automate the discovery of minimal semantic countermodels, rendering them highly interpretable for computer scientists and logicians. Future iterations will seek to expand this learning-guided semantic paradigm to non-propositional extensions, first-order modal systems, and dynamic epistemic frameworks.
-
-\paragraph{Work packages:}
-To complete Step~1 above means to extend the basic logic of Lambek  with additional operators to expand its modelling abilities and allow to handle various linguistic phenomena and ambiguities. For this, the following tasks have to be completed.
-
-
-
-\begin{enumerate}
-\item[\bf WP~1] 
-
-\end{enumerate}
+This project introduces a scalable approach to automated non-classical reasoning by combining data-driven predictive power with the formal robustness of SMT-encoded RNmatrices. Beyond enhancing proving speeds, the framework will automate the discovery of minimal semantic countermodels, rendering them highly interpretable for computer scientists and logicians. Future iterations will seek to expand this learning-guided semantic paradigm to non-propositional extensions, first-order modal systems, and dynamic epistemic frameworks.
 
 \paragraph*{Historic Context of the Collaboration:}
 The longstanding collaboration between the PARTOUT group and the PPLV team at UCL dates back to the early 2000s, when Dale Miller, one of the founders of Parsifal (the predecessor of PARTOUT) mentored Elaine Pimentel. At that time, Pimentel was an Assistant/Associate Professor at UFMG and later became a Full Professor at UFRN in Brazil. She joined UCL in 2022, where she currently holds the position of Professor of Logic and Computation.
@@ -278,22 +268,42 @@ Collectively, these activities demonstrate the strength, longevity, and producti
 
 %, notably a potential Horizon Europe application}
 
-The project is intended to create a critical mass 
-
-necessary to launch a larger program under Horizon Europe. We plan to organise workshops and invite external experts to eventually enlarge the consortium. A successful outcome of this project will allow us to attract further funding for Steps~2 and~3 of the research programme outlined above, and
-in the long term we intend to apply our methods to ...
-
+The project is intended to create a critical mass necessary to launch a larger program under Horizon Europe. We plan to organise workshops and invite external experts to eventually enlarge the consortium. A successful outcome of this project will allow us to attract further funding for the research programme outlined above.
 This initiative aims at building a strong foundation and demonstrating the potential impact,  and to secure further funding and support for extensive research and development efforts within the Horizon Europe framework.
 
 
 \paragraph{Long term outcomes of the project:} %%, including potential societal and industrial outcomes}
+The successful execution of this project is expected to yield substantial, long-term impacts across both the automated reasoning and formal verification communities:
 
+\begin{itemize}
+    \item \textbf{A Standardized API for AI-Guided Semantic Provers:} The project will result in an open-source, modular extension to the TRiNity engine. By standardizing the interface through which neural models pass valuation and row heuristics to SMT back-ends, we establish an extensible infrastructure that allows other researchers to swap in different neural architectures (e.g., Graph Transformers vs. Reinforcement Learning agents).
+    \item \textbf{Universal Benchmark Libraries for Non-Classical Logics:} To train the models, the project will generate a massive dataset of non-classical formulas across the $C_n$ hierarchy, intuitionistic logic, and modal systems, mapping formulas to their corresponding RNmatrix search paths and minimal countermodels. This will serve as a permanent benchmark library for future AI-driven ATP systems.
+    \item \textbf{Accelerated Formal Verification for Specialized Systems:} Non-classical logics are critical for verifying distributed networks (modal logic), cryptographic protocols (intuitionistic logic), and database systems handling contradictory data (paraconsistent logic). Providing an order-of-magnitude speedup in these domains will make practical formal verification viable for complex, safety-critical industrial applications that classical SAT/SMT tools cannot naturally handle.
+\end{itemize}
 
-%When the output of an AI can be formally verified it is more useful for all applications. then also critcial decision can be taken by AI. examples: ...
+\paragraph*{Risk Analysis \& Mitigation Strategies}
+Given the interdisciplinary nature of fusing deep learning models with formal symbolic reasoning, several technical and structural risks have been identified alongside concrete mitigation pathways.
 
-\paragraph*{Risk Analysis.}
-
-A common risk associated with  logics of language is overgeneration. 
+%\begin{table}[htbp]
+%\centering
+%\caption{Risk Assessment and Mitigation Matrix}
+%\label{tab:risks}
+%\begin{tabular}{p{3.5cm}llp{6.5cm}}
+%\toprule
+%\textbf{Identified Risk} & \textbf{Probability} & \textbf{Impact} & \textbf{Mitigation Strategy} \\ \midrule
+%\textbf{Data Sparsity for Training} & Medium & High & Use synthetic data generation engines by mutating existing templates and utilizing structural bootstrapping techniques. \\ \addlinespace
+%\textbf{Neural Inference Latency Bottleneck} & High & Medium & Implement lightweight, distilled models (e.g., highly compressed GNNs) and restrict neural inference to complex subformulas above a specified nesting threshold. \\ \addlinespace
+%\textbf{Poor Heuristic Convergence} & Medium & Low & \textbf{Architectural Safeguard:} The SMT layer guarantees absolute correctness. If neural guidance degrades, the engine falls back gracefully to standard TRiNity search heuristics. \\ \bottomrule
+%\end{tabular}
+%\end{table}
+\begin{enumerate}
+    \item \textbf{The Data Sparsity Challenge:} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data. 
+    \\ \textit{Mitigation:} We will implement a synthetic formula generator that systematically construct valid and invalid formulas by mutating known matrix properties, thereby creating a balanced and rich training space.
+    \item \textbf{Inference Overhead vs. Prover Speed:} Complex graph or transformer model passes could introduce a runtime overhead that cancels out the speedups gained by pruning the SMT search space.
+    \\ \textit{Mitigation:} Models will be aggressively quantized and distilled into lightweight edge architectures. Furthermore, neural prediction will only trigger at specified structural decision points (e.g., when encountering heavily quantified row constraints or multi-level modal jumps).
+    \item \textbf{Heuristic Misdirection (Hallucination):} The neural model might predict faulty row selections or misleading valuation biases, guiding the prover into highly inefficient search paths.
+    \\ \textit{Mitigation:} Because soundness and completeness are fully decoupled from the neural layer, bad predictions never compromise proof integrity. If a search path exceeds a localized timeout, the prover automatically dampens the neural weights and defaults to standard SMT backtracking.
+\end{enumerate}
 
 
 
@@ -302,14 +312,14 @@ A common risk associated with  logics of language is overgeneration.
 \subsection*{Calendar for the project}
 
 \begin{itemize}
-    \item Start date: 1 September 2026
+    \item Start date: 1 January 2027
     \item Duration 16 months
     \item Main milestones: We expect each of the four work packages to take about 3-4 months, giving us room to adjust in case of unforeseen difficulties. The last two month are reserved for writing up our result in form of publications in prestigious conferences and journals.
     \begin{itemize}
-        \item  November 2026: finish WP1
-        \item March 2027: finish WP2
-        \item June 2027: finish WP3
-        \item October 2027: finish WP4
+        \item  April 2027: Build the Deep Neural Heuristic Engine (GNN / Transformer)
+        \item July 2027: Propose the TRiNity Matrix-to-SMT Encoder
+        \item November 2027: Implement the SMT Back-End Solver (Z3 / CVC5)
+        \item 2027: Benchmark the results
     \end{itemize}
 \end{itemize}
 
@@ -383,13 +393,13 @@ and costs of \euro2600 for providing refreshments  (for two days for each worksh
 
 \begin{enumerate}
 
-\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{04569184}
+\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{HAL\#}
 \end{enumerate}
 
 \subsubsection*{a. Elaine Pimentel (PI of the British team)}
 
 \begin{enumerate}
 
-\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{04569184}
+\copubsitemref{Elaine}{Title}{Venue}{doi}
 \end{enumerate}
 \end{document}
