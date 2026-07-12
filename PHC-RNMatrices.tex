@@ -1,28 +1,29 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[a4paper]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage[official]{eurosym}
+\usepackage{enumitem}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
 
 % Standardized TikZ configuration
 \tikzset{
     myblock/.style={
-        rectangle, 
-        draw, 
-        fill=blue!10, 
-        text width=12cm, 
-        align=center, 
-        rounded corners, 
+        rectangle,
+        draw,
+        fill=blue!10,
+        text width=12cm,
+        align=center,
+        rounded corners,
         minimum height=1.2cm,
         thick
     },
     myline/.style={
-        draw, 
-        thick, 
-        ->, 
+        draw,
+        thick,
+        ->,
         >=Stealth
     }
 }
@@ -36,18 +37,18 @@
      {{#1}}}
 
 \newcommand{\copubsitemref}[4]{
-  \item#1: 
+  \item#1:
   {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
   \\{\small\tt\webref{#4}}
 }
 
 \newcommand{\copubsitemhalref}[4]{
-  \item#1: 
+  \item#1:
   {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
   \\{\small\tt\halwebref{#4}}
 }
 \newcommand{\copubsitemfullref}[5]{
-  \item#1: 
+  \item#1:
   {\def\bfdefault{bx}\bf\emph{#2\myperiod}} #3.
   \\{\small\tt\webref{#4}}
   \\{\small\tt\halwebref{#5}}
@@ -77,7 +78,7 @@ France}
 \begin{document}
 
 \begin{center}
-  \bf Application to the Sophie Germain funding scheme 
+  \bf Application to the Sophie Germain funding scheme
   \\[1ex]
   \normalsize\rm
   Research Track: Artificial intelligence
@@ -98,29 +99,29 @@ Automated theorem proving (ATP) is a cornerstone of modern software verification
 
 The French Team consists of members of the {\sc Partout} project which is joint between Inria Saclay and LIX (UMR 7161) at \'{E}cole Polytechnique. This team brings extensive expertise in all areas of logic, formal verification, and proof theory, which is crucial for the success of the project.
 
-\begin{itemize}
-\fmemb{PI: Kaustuv Chaudhuri}{Charg\'{e} de recherche}{kaustuv@chaudhuri.info}{\sacaddr}
+\begin{itemize}[noitemsep]
+\fmemb{PI: \textbf{Kaustuv Chaudhuri}}{Junior researcher (CRHC)}{kaustuv@chaudhuri.info}{\sacaddr}
 
-\fmemb{Dale Miller}{Directeur de recherche}{dale.miller@inria.fr}{\sacaddr}
+\fmemb{Dale Miller}{Senior researcher (DRHC)}{dale.miller@inria.fr}{\sacaddr}
 
-\fmemb{Lutz Stra\ss burger}{Directeur de recherche}{lutz@lix.polytechnique.fr}{\sacaddr} 
+\fmemb{Lutz Stra\ss burger}{Senior researcher (DR)}{lutz@lix.polytechnique.fr}{\sacaddr}
 
-\fmemb{Beniamino Accattoli}{Charg\'{e} de recherche}{beniamino.accattoli@inria.fr}{\sacaddr}
+\fmemb{Beniamino Accattoli}{Junior researcher (CR)}{beniamino.accattoli@inria.fr}{\sacaddr}
 
 \fmemb{Victoria Barrett}{Postdoc}{victoria.barrett@inria.fr}{\sacaddr}
 
 \fmemb{Arunava Gantait}{PhD student}{Arunava.Gantait@lix.polytechnique.fr}{\sacaddr}
-
 \end{itemize}
 The postal address for all team members is:\\[.5ex] \sacaddrb.
 
 
 \subsubsection*{British Team.}
 
-The British team is located at University College London, and it comprises experts in logic and verification, as well as machine learning and proof theory. 
-\begin{itemize}
-
-\fmemb{PI: Elaine Pimentel}{Professor of logic and Computation}{e.pimentel@ucl.ac.uk}{66-72 Gower St., University College London,
+The British team is located at University College London, and it comprises experts in logic and verification, as well as machine learning and proof theory.
+%
+\begin{itemize}[noitemsep]
+\fmemb{PI: \textbf{Elaine Pimentel}}{Professor of logic and Computation}{e.pimentel@ucl.ac.uk}{66-72 Gowe
+r St., University College London,
 WC1E 6EA London, UK}
 
 \fmemb{David Pym}{Professor of Information, Logic, and Security}{d.pym@ucl.ac.uk}{66-72 Gower St., University College London,
@@ -239,7 +240,7 @@ The benchmark will combine examples from the literature with automatically gener
 The project is expected to produce a new generation of hybrid automated reasoning tools in which AI-based guidance is combined with formally verified symbolic procedures.
 
 Its main outcomes will be:
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item learned proof-search strategies for sequent systems specified in rewriting logic;
 
 \item AI-guided algorithms for constructing RNmatrix valuations and minimal countermodels;
@@ -290,7 +291,7 @@ Given the interdisciplinary nature of fusing deep learning models with formal sy
 %\end{tabular}
 %\end{table}
 \begin{enumerate}
-    \item \textbf{The Data Sparsity Challenge.} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data. 
+    \item \textbf{The Data Sparsity Challenge.} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data.
     \\ \textit{Mitigation:} We will implement a synthetic formula generator that systematically construct valid and invalid formulas by mutating known matrix properties, thereby creating a balanced and rich training space.
     \item \textbf{Inference Overhead vs. Prover Speed.} Complex graph or transformer model passes could introduce a runtime overhead that cancels out the speedups gained by pruning the SMT search space.
     \\ \textit{Mitigation:} Models will be aggressively quantized and distilled into lightweight edge architectures. Furthermore, neural prediction will only trigger at specified structural decision points (e.g., when encountering heavily quantified row constraints or multi-level modal jumps).
@@ -353,10 +354,10 @@ Other & 11 000 & workshop organisation\\
 \subsubsection*{b. Justification of expenses}
 
 \subsection{Justification of Expenses}
-The proposed budget is directly tied to the core objectives of the project, focusing on maximizing the collaborative expertise of the two teams, enabling intensive neural network training, and fostering wider research consortiums. 
+The proposed budget is directly tied to the core objectives of the project, focusing on maximizing the collaborative expertise of the two teams, enabling intensive neural network training, and fostering wider research consortiums.
 
 \begin{itemize}
-    \item \textbf{Travel and Subsistence (\euro 22,800):} Since this is a joint initiative between PARTOUT (France) and PPLV (UK), face-to-face collaboration is paramount. The bulk of the budget is allocated to cross-border research exchanges, specifically prioritizing PhD students and junior researchers. 
+    \item \textbf{Travel and Subsistence (\euro 22,800):} Since this is a joint initiative between PARTOUT (France) and PPLV (UK), face-to-face collaboration is paramount. The bulk of the budget is allocated to cross-border research exchanges, specifically prioritizing PhD students and junior researchers.
     \begin{itemize}
         \item \textit{Mutual Bilateral Visits (\euro 17,800):} Covers 10 distinct one-week research visits (5 from France to the UK, and 5 from the UK to France). Each visit is budgeted at \euro 700, encompassing \euro 200 for return train travel and \euro 500 for local accommodation and subsistence (\euro 100/day for 5 days). It also covers 4 one-month visits from PhD students and postdocs, each visit is budgeted at \euro 2,700: \euro 200 for return train travel and \euro 2,500 for local accommodation and subsistence.
         \item \textit{Conference Attendance (\euro 5,000):} Allocates \euro 2,500 each for two PhD students to present research results at major international peer-reviewed conferences. This includes registration fees (\euro 800), transportation (\euro 700), and accommodation/subsistence (\euro 1,000).
@@ -368,7 +369,7 @@ The proposed budget is directly tied to the core objectives of the project, focu
 
     \item \textbf{Publication Costs (\euro 2,000):} While the teams strongly advocate for green open-access and host all primary preprints freely on HAL, this fund is strictly reserved to cover mandatory Open Access or processing fees levied by prestigious international conferences in automated reasoning.
 
-    \item \textbf{Workshop Organisation (\euro 11,000):} To establish the critical mass required for future Horizon Europe bids, the project will host two milestone workshops--one in France and one in the United Kingdom. 
+    \item \textbf{Workshop Organisation (\euro 11,000):} To establish the critical mass required for future Horizon Europe bids, the project will host two milestone workshops--one in France and one in the United Kingdom.
     \begin{itemize}
         \item \textit{External Expert Travel (\euro 8,400):} Covers the travel and lodging for two invited international experts per workshop (\euro 1,500 airfare + \euro 600 for a 3-night hotel stay per expert).
         \item \textit{Catering and Refreshments (\euro 2,600):} Provides lunch (\euro 450/day) and two coffee breaks (\euro 90/break) across the 2-day duration of each workshop for an estimated 30 participants. Institutional lecture halls are provided free of charge by the host universities.
@@ -399,3 +400,8 @@ The proposed budget is directly tied to the core objectives of the project, focu
 \copubsitemref{K. Chaudhuri, J. Despeyroux, C. Olarte, E. Pimentel}{Hybrid Linear Logic, revisited}{MSCS Volume 29 Issue 8, pp. 1151-1176, 2019}{https://doi.org/10.1017/S0960129518000439}
 \end{enumerate}
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

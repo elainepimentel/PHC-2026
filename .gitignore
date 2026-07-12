@@ -1,0 +1,16 @@
+*.lp
+*.lpo
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.pdf
+*.thc
+*.json
+*.dvi
+*.fls
+*.fdb_latexmk
+proof-search-with-equality.org
+.DS_Store
+auto/
