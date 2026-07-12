@@ -74,30 +74,27 @@ Campus de l'\'{E}cole Polytechnique,
 91120 Palaiseau,
 France}
 
-\title{\textbf{Project Proposal: Learning-Guided Semantics for Non-Classical Reasoning (LGS-NCR)}}
-\author{\textbf{Research Track:} Artificial Intelligence}
-\date{\vspace{-5ex}}
-
 \begin{document}
 
-\maketitle
+\begin{center}
+  \bf Application to the Sophie Germain funding scheme 
+  \\[1ex]
+  \normalsize\rm
+  Research Track: Artificial intelligence
+    \\[2ex]
+  \Large\bf  AI-Guided Reasoning Using Sematics for Non-Classical Logics (ARGUS)
+%5  \\[1ex]
+%  \normalsize\rm
+ % Priority Theme: Artificial intelligence, including ethics
+\end{center}
 
-\begin{abstract}
-Modern automated reasoning systems rely heavily on a simple but powerful assumption: the truth of a complex statement can always be determined from the truth of its parts. This principle underpins classical logic and has made possible highly successful technologies such as SAT solvers, which are now used to verify hardware and software, optimise industrial processes, and solve challenging combinatorial problems.
-%
-However, many forms of reasoning that arise in mathematics, computer science, philosophy, and artificial intelligence do not obey this principle. Modal logics, intuitionistic logics, and logics that tolerate inconsistent information require richer semantic models, making automated reasoning dramatically more difficult. Existing methods often suffer from an explosion in the number of possibilities that must be explored, limiting their scalability to large and complex problems.
-%
-This project builds on Restricted Non-deterministic Matrices (RNmatrices), a powerful semantic framework that has recently enabled state-of-the-art automated theorem provers for several important families of non-classical logics. These provers can determine whether a statement is valid and automatically construct counterexamples when it is not. Despite these advances, the underlying search procedures remain computationally expensive.
-%
-The project proposes a fundamentally new approach by combining rigorous logical semantics with modern machine learning. Rather than replacing formal reasoning, machine learning models will learn to guide it, predicting the most promising reasoning paths while an underlying theorem prover guarantees that every result remains mathematically correct. This hybrid architecture combines the adaptability of AI with the reliability of formal verification.
-%
-If successful, the project will establish a new paradigm for automated reasoning in non-classical logics. Beyond advancing the foundations of logic, it will provide scalable reasoning technologies for large research programmes in formal verification, trustworthy AI, knowledge representation, and automated mathematics. More broadly, it will demonstrate how machine learning and symbolic reasoning can work together to solve problems that neither approach can tackle effectively on its own, contributing to one of the central challenges in artificial intelligence.
-%The principle of truth-functionality, central to classical and many-valued logics, states that the truth-value of a complex formula is uniquely determined by the truth-values of its subformulas. This makes truth tables both easy to understand and implement, enabling SAT solvers to crack remarkably hard problems. But this tidy picture cannot be obtained when crossing the boundary of classicality, reaching e.g., modal logics. Non-deterministic matrices (Nmatrices) generalise ordinary matrices by allowing connectives to return a set of possible truth values rather than a unique one, thereby increasing expressive power. Restricted non-deterministic matrices (RNmatrices) further refine this framework by imposing constraints on the rows of Nmatrices, filtering out ``unsound'' rows and retaining only ``valid'' ones. This yields a more expressive semantic framework that has been successfully used to provide sound and complete semantics for a wide range of logics, including paraconsistent, intuitionistic, and modal logics. Recently,  automated theorem provers (ATP) based on RNmatrices were developed by encoding their semantics as Satisfiability Modulo Theories (SMT) problems. The resulting provers decide validity and construct countermodels, achieving state-of-the-art performance for paraconsistent logics and competitive results for intuitionistic and modal logics. While this framework yields robust decision procedures, it still suffers from a combinatorial explosion due to the vast space of admissible rows, non-deterministic valuation choices, and structural elimination criteria. This project proposes a novel hybrid paradigm that embeds Machine Learning (ML) techniques directly into the semantics-driven proof search of RNmatrices. The project aims to dramatically prune the search space, by training graph neural networks (GNNs) and transformer models to predict viable row constraints, prioritize candidate valuations, and anticipate minimal countermodels. Crucially, the underlying SMT-solver back-end preserves absolute soundness and completeness, uniting data-driven adaptive heuristics with formal proof guarantees.
-\end{abstract}
+\paragraph*{Abstract.}
+
+Automated theorem proving (ATP) is a cornerstone of modern software verification, industrial optimization, and system security. However, when moving beyond classical constraints to handle qualified truth, constructive reasoning, or inconsistent data, traditional symbolic solvers suffer from severe performance degradation caused by vast heuristic search spaces. The ARGUS project addresses this challenge by pioneering a hybrid neuro-symbolic paradigm that embeds machine learning directly into state-of-the-art non-classical reasoning engines. Bringing together premier logic, proof theory, and verification teams from Inria Saclay and University College London, this bilateral initiative deploys data-driven models to optimize sequent calculus derivations and prune Satisfiability Modulo Theories (SMT) encodings for Restricted Non-Deterministic Matrices (RNmatrices). The project safely boosts proving speeds and countermodel clarity without compromising formal logical correctness, by completely decoupling the statistical learning layer from an absolute symbolic verification kernel. Ultimately, ARGUS delivers an open-source, user-oriented platform that bridges the gap between statistical AI and formal logic, creating the critical mass required to scale these breakthroughs into a larger Horizon Europe research program.
 
 \subsection*{1. Presentation of the teams}
 
-\subsubsection*{a. French Team}
+\subsubsection*{French Team.}
 
 The French Team consists of members of the {\sc Partout} project which is joint between Inria Saclay and LIX (UMR 7161) at \'{E}cole Polytechnique. This team brings extensive expertise in all areas of logic, formal verification, and proof theory, which is crucial for the success of the project.
 
@@ -118,7 +115,7 @@ The French Team consists of members of the {\sc Partout} project which is joint 
 The postal address for all team members is:\\[.5ex] \sacaddrb.
 
 
-\subsubsection*{b. British Team}
+\subsubsection*{British Team.}
 
 The British team is located at University College London, and it comprises experts in logic and verification, as well as machine learning and proof theory. 
 \begin{itemize}
@@ -156,92 +153,108 @@ WC1E 6EA London, UK
 
 \subsection*{2. The Research Project}
 
-\paragraph{State of the Art:}
+\paragraph{State of the Art.}
+Over the past few years, we have developed several automated reasoning methods for non-classical logics. These methods follow two complementary approaches. The first is proof-theoretic and is based on deductive rules, particularly sequent calculi. The second is semantic and relies on finite-valued non-deterministic matrices, or RNmatrices, and restricted classes of valuations.
 
-%\subsection{The Challenge of Truth-Functionality in Non-Classical Logics}
-In classical propositional logic, truth-functionality ensures that the truth value of a complex formula is uniquely determined by its subformulas. This structural rigidity underpins modern SAT and SMT technologies. However, when moving beyond classical bounds into constructive or modal realms, finite truth-functionality collapses. G\"{o}del proved in 1932 that no finite-valued deterministic matrix can faithfully characterize propositional intuitionistic logic ($IL_p$). Similarly, Dugundji demonstrated in 1940 that finite truth-functionality cannot preserve modal interpretations of ``qualified truth'' across the modal cube.
+Our proof-theoretic methods have been implemented in rewriting logic, using rewriting and narrowing as the underlying computational mechanisms. In this setting, the inference rules of a sequent calculus are represented as rewrite rules, and the search for a derivation is reduced to a reachability problem. The same reflective infrastructure can also be used to reason about the proof system itself, for instance, to establish admissibility, invertibility, identity expansion, and cut elimination.
 
-To overcome these constraints without resorting to infinite-valued structures, Avron and Lev introduced Non-Deterministic Matrices (Nmatrices), substituting truth functions with multifunctions that map tuples of values to a set of possible values.
+Our semantic methods generate finite truth tables or encode the corresponding valuation constraints into satisfiability-modulo-theories, or SMT, problems. In recent work, we developed modular Nmatrix-based decision procedures for modal logics, with a companion prover, TRiNity. These procedures search for partial valuations that satisfy the semantic dependencies imposed by the logic. When a formula is not valid, the resulting valuations can be used to construct a countermodel and, in the modal setting, to recover an associated Kripke-style structure.
 
-%\subsection{From Nmatrices to RNmatrices}
-While Nmatrices capture many non-classical behaviors, they are occasionally too permissive. For instance, blind non-determinism fails to model the strict proof-theoretic evolution of intuitionistic logic or the rule of necessitation in modal logic, generating invalid matrix rows that break soundness. Restricted Non-Deterministic Matrices (RNmatrices) resolve this by enforcing global first-order or modal constraints over the set of allowed valuations, filtering out non-deterministic choices that do not align with the target deductive system\footnote{R. R. Leme, C. Olarte, E. Pimentel and M. E. Coniglio, {\em The Modal Cube Revisited: Semantics without Worlds}, TABLEAUX 2025.}. 
+Although these approaches provide formally justified decision and semi-decision procedures, their efficiency remains highly dependent on a number of heuristic choices.
 
-%Table~\ref{tab:logics} summarizes key semantic components across target formalisms.
+For sequent systems, proof search depends on decisions such as which inference rule to apply, which occurrence of a formula should be selected as principal, which pending goal should be explored first, and which previously established lemmas should be made available. Poor choices may produce unnecessarily large search trees, repeated subproblems, or non-terminating branches.
+
+For RNmatrix-based methods, the procedure must explore potentially large spaces of partial valuations. Its performance depends on the order in which subformulas are considered, the truth values assigned to them, and the selection of supporting valuations required by the semantic dependencies. When the problem is translated into SMT, similar decisions determine the branching behavior of the solver.
+
+A further difficulty concerns the implementation of the SMT encodings. Semantically equivalent representations may behave very differently depending on the solver and the class of formulas under consideration. Truth values may, for example, be represented using algebraic datatypes, bit vectors, integers, or collections of Boolean variables. Functions and semantic relations may be encoded using uninterpreted functions, arrays, finite maps, or explicit Boolean constraints. Choosing an appropriate representation and solver configuration currently requires significant expert knowledge and manual experimentation.
+
+Finally, the existing implementations are primarily research prototypes. Making them accessible to a wider community requires additional work on parsers, user interfaces, interoperability, visualization, and explanation facilities. In particular, users should be able to inspect a generated sequent derivation, understand why a proof attempt failed, examine a falsifying valuation, and visualize the corresponding countermodel.
+
+\paragraph{Research programme.}
+The central hypothesis of this project is that artificial intelligence can substantially improve the efficiency and usability of these automated reasoning procedures without compromising their logical guarantees.
+
+The project will follow a neuro-symbolic architecture in which AI components are used only to guide or configure the search. All results proposed by an AI component will be checked by the existing symbolic infrastructure. A positive answer will therefore be accompanied by a formally checkable derivation or proof certificate, while a negative answer will be justified by an explicit valuation or countermodel.
 %
-%\begin{table}[htbp]
-%\centering
-%\caption{Core Languages and Truth-Value Dimensions in RNmatrix Semantics}
-%\label{tab:logics}
-%\begin{tabular}{llll}
-%\toprule
-%\textbf{Logic} & \textbf{Core Language Elements} & \textbf{Truth Values ($\mathcal{V}$)} & \textbf{Designated Values ($\mathcal{D}$)} \\ \midrule
-%\textbf{Modal $S4$} & $p, \perp, \top, \neg, \Box, \rightarrow, \wedge, \vee$ & $\{0, 1, 2\}$ & $\{1, 2\}$ \\
-%\textbf{Intuitionistic $IL_p$} & $p, \perp, \top, \neg, \rightarrow, \wedge, \vee$ & $\{T, F\}$ & $\{T\}$ \\
-%\textbf{Paraconsistent $C_n$} & $p, \neg, \rightarrow, \wedge, \vee$ & $\{T_n, t_0^n, \dots, t_{n-1}^n, F_n\}$ & $\mathcal{V}_{C_n} \setminus \{F_n\}$ \\ \bottomrule
-%\end{tabular}
-%\end{table}
+This separation between a heuristic AI layer and a trusted symbolic kernel is {\em essential}. It allows the project to benefit from statistical learning while preserving the soundness of the underlying deductive and semantic methods.
 
-%\subsection{The TRiNity SMT Framework}
-Recent progress materialized in the automated theorem prover TRiNity\footnote{R. R. Leme, C. Olarte, E. Pimentel, {\em Efficient Decision Procedures for RNmatrix Semantics}, LSFA 2026.}, which translates validity problems into a multi-sorted SMT signature containing sorts for truth values (\texttt{Val}), rows (\texttt{Row}), and formula columns (\texttt{Col}). A formula $\alpha$ is valid if and only if an arbitrary row $r_0$ cannot falsify it under the structural matrix constraints and the logic-specific restriction criteria.
-
-%\section{Problem Statement \& Motivation}
-
-\paragraph{Research programme:}
-Although the SMT-encoding methodology outperforms standard tableau-based systems for logics like paraconsistent da Costa's $C_n$ hierarchy, it encounters severe bottlenecks when scaled up:
+%Scientific objectives
+We intend to achieve this by the following three steps:
 \begin{enumerate}
-    \item \textbf{Combinatorial Row Explosion:} In logics requiring nested or backward-looking existence criteria (such as $IL_p$ and modal $S4$), verifying a valuation necessitates confirming the existence of companion or successor valuations. In SMT-LIB syntax, this translates to heavily quantified formulas ($\forall r . \exists w$) over uninterpreted matrix functions (\texttt{mat}).
-    \item \textbf{Blind Valuation Guessing:} SMT solvers rely on generic, logic-agnostic heuristic engines (e.g., CDCL, internal simplex variants, or E-matching for quantifiers). They do not exploit the highly structured semantic layouts inherent to matrix representations.
-    \item \textbf{Countermodel Inflation:} When a formula is invalid, the SMT solver searches for a countermodel. Without domain guidance, the constructed countermodels are frequently bloated and suboptimal, obscuring the core structural reasons for invalidity.
+\item {\em Learning strategies for sequent proof search.}
+The first objective is to develop learned strategies for proof search in sequent calculi implemented in rewriting logic.
+%
+The current procedures may generate several applicable rewrites at a given proof state. The project will investigate models that rank these alternatives according to their estimated probability of contributing to a successful and economical proof. The learned strategy may guide several related decisions: (i) selection of the next inference rule; (ii)selection of the principal formula or formula occurrence; (iii) ordering of the premises generated by a rule; (iv) selection of the next pending proof obligation; (v) prediction of useful admissibility or invertibility lemmas; (vi) detection of branches that are unlikely to succeed within the available resources.
+
+Training data will initially be extracted from successful and unsuccessful execution traces produced by the existing tools. A proof state can be represented using syntactic features, formula trees, multisets of formulas, or graph representations that make dependencies between subformulas explicit. Supervised learning can then be used to imitate successful proof traces. This approach may subsequently be complemented by reinforcement learning or online learning, where the reward reflects proof success, proof length, execution time, or the number of explored states.
+
+The learned strategy will not remove any inference rule from the calculus. It will rank alternatives and allocate computational resources among them. When the learned component is uncertain or unsuccessful, the tool will be able to fall back on an exhaustive or fairness-preserving search strategy. The resulting procedure will therefore retain the guarantees of the original symbolic system whenever the underlying exhaustive procedure terminates.
+
+\item  {\em AI-guided construction of falsifying RNmatrix valuations.}
+The second objective is to accelerate validity checking by guiding the search for falsifying partial valuations and countermodels.
+%
+Given a formula, the RNmatrix procedure must assign truth values to its subformulas while satisfying the non-deterministic truth tables and the additional restrictions imposed by the logic. When a truth value introduces a semantic dependency, the procedure may also need to identify another valuation that supports it. This produces several opportunities for learning-based guidance.
+
+A model may predict promising truth values for atomic formulas and selected subformulas, prioritizing assignments that are likely to make the target formula non-designated. It may also rank candidate supporting valuations or predict which semantic dependencies are likely to cause a partial valuation to be rejected. Information extracted from unsuccessful attempts can be used to learn recurring conflict patterns, analogously to the way symbolic solvers record combinations of decisions that cannot lead to a solution.
+
+The AI component may be used either in the explicit truth-table procedure or as a source of branching hints for an SMT encoding. In both cases, the predictions will remain heuristic: a proposed valuation must satisfy the complete RNmatrix constraints before it can be reported as a counterexample.
+
+An additional goal will be the construction of small and intelligible countermodels. The learned component may guide the search toward valuations involving fewer rows, fewer supporting relations, or simpler assignments. This could improve both performance and the explanatory quality of the generated results.
+
+\item {\em Automatic selection and synthesis of SMT encodings.}
+The third objective is to automate the engineering of solver-specific encodings.
+%
+The project will define a family of semantically equivalent encoding patterns for RNmatrices and related logical structures. These patterns may differ in their representation of truth values, valuations, non-deterministic operators, finite relations, and semantic dependencies.
+
+Machine-learning-based algorithm selection will then be used to choose among: (i) different SMT solvers; (ii) different representations, such as bit vectors, algebraic datatypes, integers, arrays, or Boolean vectors; (iii) alternative axiomatisations of the same semantic constraints; (iv) solver parameters and preprocessing options; (v) eager or incremental generation of semantic constraints.
+
+The selection will be based on features of the input formula and logic, including its size, modal depth, connective distribution, number of repeated subformulas, expected truth-value domain, and structure of the required semantic dependencies.
+
+Large language models may additionally assist in producing initial implementations of new encodings or translations between solver languages. However, generated encodings will not be trusted directly. They will be validated through differential testing, comparison with existing decision procedures, property-based testing, and, where possible, formal proofs of equivalence.
+
+The scientific goal is not merely to automate programming tasks, but to develop a systematic and reusable methodology for learning which symbolic representation is best suited to a given reasoning problem.
+
+\item {\em Trustworthy explanations and user-oriented tools.}
+The fourth objective is to turn the existing prototypes into an accessible reasoning environment.
+%
+The platform will provide a common interface through which users can select a logic, enter a formula or sequent, choose an analysis, and inspect the result. AI-assisted language processing may be used to translate between different concrete syntaxes or to help users formulate a query. Nevertheless, the internal formal representation will always be displayed and validated before the analysis is performed.
+
+For valid formulas and derivable sequents, the platform will reconstruct and visualize the corresponding proof tree. It will identify the inference rule used at each step and make explicit any auxiliary lemma or structural property on which the derivation depends.
+
+For invalid formulas, it will display the falsifying RNmatrix valuation, explain the semantic dependencies between its rows, and, when applicable, construct a graphical Kripke-style countermodel. Natural-language explanations will be generated from these checked symbolic objects rather than directly from the output of a language model. This will ensure that explanations remain grounded in the formal evidence produced by the tool.
+
+The platform will expose both a graphical web interface and a programmatic API, making it possible to use the developed procedures in teaching, experimentation, and other verification tools.
 \end{enumerate}
 
-%\section{Proposed Methodology: The Hybrid AI-SMT Framework}
-We propose a hybrid framework that injects intelligent, data-driven heuristics into the RNmatrix execution pathway while preserving the exact completeness and correctness of the SMT layer. 
-
-%The schema below illustrates the system architecture.
-%\begin{center}
-%\begin{tikzpicture}[node distance=1.8cm, auto]
-%    % Nodes (explicitly utilizing the corrected 'myblock' style)
-%    \node [myblock] (input) {\textbf{Input Non-Classical Formula}};
-%    \node [myblock, below=of input] (ai) {\textbf{Deep Neural Heuristic Engine (GNN / Transformer)} \\ - Predicts sound row valuation patterns \\ - Prioritizes promising proof paths \& countermodels};
-%    \node [myblock, below=of ai] (trinity) {\textbf{TRiNity Matrix-to-SMT Encoder} \\ Emits multi-sorted SMT-LIB files annotated with AI hints};
-%    \node [myblock, below=of trinity] (smt) {\textbf{SMT Back-End Solver (Z3 / CVC5)} \\ Enforces formal constraints \& absolute correctness};
-%    
-%    % Paths (explicitly utilizing the corrected 'myline' style)
-%    \path [myline] (input) -- (ai);
-%    \path [myline] (ai) -- node [right, font=\small, text width=6cm, align=left] {Neural Guidance \\ (Weights \& Hints)} (trinity);
-%    \path [myline] (trinity) -- (smt);
-%\end{tikzpicture}
-%\end{center}
-%\subsection{Neural Structure Encoding}
-Logical formulas will be parsed as Heterogeneous Graph structures where subformula dependencies represent edges, and operators ($\Box, \neg, \rightarrow$) represent node types. Graph Neural Networks (GNNs) will learn low-dimensional vector representations of these formulas. In parallel, a Transformer model will sequence the subformula tokens to learn global contextual boundaries.
-
-%\subsection{Semantic Valuation \& Row Prioritization}
-Instead of forcing the SMT solver to blindly evaluate the uninterpreted function \texttt{mat(Row, Col)}, the trained model outputs a probability distribution over the matrix sort space:
+\paragraph{Work packages.}
 \begin{itemize}
-    \item \textbf{Row Selection:} Predicts which rows in a multi-row evaluation (e.g., Kripke-like accessibility pathways in $IL_p$ or $S4$) are vital to trigger a contradiction or satisfy an assertion.
-    \item \textbf{Valuation Biasing:} Injects SMT \texttt{set-info} or branch-fuzzing weights that bias the solver toward evaluating designated or non-designated values based on structural formula features.
+\item[\bf WP~1] The project will begin with the construction of a common benchmark and trace infrastructure. The existing sequent and RNmatrix implementations will be instrumented to record proof states, candidate decisions, successful and unsuccessful branches, solver calls, generated valuations, and execution costs.
+
+The benchmark will combine examples from the literature with automatically generated formulas. It will cover different families of propositional, modal, intuitionistic, paraconsistent, and substructural logics supported by the existing methods. Care will be taken to separate training and evaluation data not only by individual formulas, but also by formula families and logical systems. This will make it possible to evaluate whether the learned strategies generalize beyond minor variations of previously observed examples.
+
+\item[\bf WP~2]  The AI-guided procedures will be compared with the existing exhaustive search strategies and manually designed heuristics. The main evaluation criteria will include: (i) the number and percentage of instances solved within fixed time and memory limits; (ii) total execution time and memory consumption; (iii) the number of explored proof states or partial valuations; (iv) proof length and countermodel size; (v) the overhead introduced by the learned components; (vi) generalization to previously unseen formula structures and logical systems; (vii) the percentage of generated results successfully validated by the symbolic checker.
+
+\item[\bf WP~3]  Ablation experiments will determine the contribution of individual features and learning mechanisms. For example, rule selection, formula selection, lemma prediction, and subgoal ordering will be evaluated both independently and in combination.
 \end{itemize}
+\paragraph{Expected outcomes.}
+The project is expected to produce a new generation of hybrid automated reasoning tools in which AI-based guidance is combined with formally verified symbolic procedures.
 
-%\subsection{Predictive Countermodel Generation}
-For invalid formulas, the neural model will be optimized using a customized loss function to output a partial matrix assignment that minimizes the required valuation cardinality. The SMT solver uses this partial matrix as a ``warm-start'' hint, converting a complex synthesis task into an efficient checking task.
+Its main outcomes will be:
+\begin{itemize}
+\item learned proof-search strategies for sequent systems specified in rewriting logic;
 
-%\subsection{Soundness and Completeness Preservation}
-Crucially, AI predictions are treated solely as soft constraints (search biases, ordering heuristics, or initial assignments). If the neural model makes an incorrect inference, the underlying SMT core ensures it is safely bypassed, guaranteeing that the prover remains fully sound and complete.
+\item AI-guided algorithms for constructing RNmatrix valuations and minimal countermodels;
 
-%\section{Evaluation Plan \& Benchmarking}
-The performance of the learning-guided framework will be measured quantitatively across three execution domains:
-\begin{enumerate}
-    \item \textbf{The Paraconsistent Hierarchy ($C_n$):} Benchmarking on deep nested depth contradictions ($c_k(\alpha)$). We will assess if the AI can predict the exact point where the ``classical core'' triggers explosion ($k \ge n$), thereby skipping unnecessary matrix searches.
-    \item \textbf{Intuitionistic Logic ($IL_p$):} Evaluation on the intuitionistic ILTP library. The target metric is the time reduction in validating the localized existence criterion for implication and negation ($\forall v \exists w$).
-    \item \textbf{The Modal Cube ($S4$):} Evaluating performance on modal formulas that test iterated necessity ($\Box\Box\alpha \leftrightarrow \Box\alpha$). The framework will be optimized to efficiently navigate Gr\"{a}tz's partial level valuations.
-\end{enumerate}
+\item methods for automatically selecting SMT solvers, encodings, and configurations;
 
-Success will be defined as an increase in the number of solved problems within a standard 300-second timeout window, combined with a reduction in back-tracking steps inside the SMT engine compared to the baseline TRiNity prover.
+\item a benchmark suite containing formulas, proof traces, valuations, and solver-performance data;
 
-%\section{Expected Impact \& Future Work}
-This project introduces a scalable approach to automated non-classical reasoning by combining data-driven predictive power with the formal robustness of SMT-encoded RNmatrices. Beyond enhancing proving speeds, the framework will automate the discovery of minimal semantic countermodels, rendering them highly interpretable for computer scientists and logicians. Future iterations will seek to expand this learning-guided semantic paradigm to non-propositional extensions, first-order modal systems, and dynamic epistemic frameworks.
+\item a unified open-source platform providing proof search, validity checking, countermodel generation, visualization, and formally grounded explanations.
+\end{itemize}
+Beyond the immediate performance improvements, the project will investigate a broader scientific question: {\em how can statistical methods be incorporated into automated deduction without weakening the formal guarantees that distinguish theorem provers from general-purpose generative systems?}
 
-\paragraph*{Historic Context of the Collaboration:}
+The expected result is an architecture in which AI is used where heuristics and prediction are most valuable, while rewriting logic, RNmatrix semantics, and SMT solving provide the trusted foundations needed to certify every final answer.
+
+\paragraph*{Historic Context of the Collaboration.}
 The longstanding collaboration between the PARTOUT group and the PPLV team at UCL dates back to the early 2000s, when Dale Miller, one of the founders of Parsifal (the predecessor of PARTOUT) mentored Elaine Pimentel. At that time, Pimentel was an Assistant/Associate Professor at UFMG and later became a Full Professor at UFRN in Brazil. She joined UCL in 2022, where she currently holds the position of Professor of Logic and Computation.
 
 Since those early years, the collaboration between Parsifal/PARTOUT and Pimentel has remained active and productive. Between 2002 and 2012, Lutz Stra\ss burger, Alexis Saurin, and Dale Miller, members of the Parsifal group, made five research visits to UFMG and UFRN, while Brazilian researchers regularly visited France, typically for one- to two-month stays each year.
@@ -266,7 +279,7 @@ The depth of this partnership is further underscored by active participation in 
 Collectively, these activities demonstrate the strength, longevity, and productivity of the research partnership between PARTOUT and PPLV.
 
 
-\paragraph{Plans for continued collaboration and funding prospects after the project:}
+\paragraph{Plans for continued collaboration and funding prospects after the project.}
 
 %, notably a potential Horizon Europe application}
 
@@ -274,16 +287,16 @@ The project is intended to create a critical mass necessary to launch a larger p
 This initiative aims at building a strong foundation and demonstrating the potential impact,  and to secure further funding and support for extensive research and development efforts within the Horizon Europe framework.
 
 
-\paragraph{Long term outcomes of the project:} %%, including potential societal and industrial outcomes}
+\paragraph{Long term outcomes of the project.} %%, including potential societal and industrial outcomes}
 The successful execution of this project is expected to yield substantial, long-term impacts across both the automated reasoning and formal verification communities:
 
 \begin{itemize}
-    \item \textbf{A Standardized API for AI-Guided Semantic Provers:} The project will result in an open-source, modular extension to the TRiNity engine. By standardizing the interface through which neural models pass valuation and row heuristics to SMT back-ends, we establish an extensible infrastructure that allows other researchers to swap in different neural architectures (e.g., Graph Transformers vs. Reinforcement Learning agents).
-    \item \textbf{Universal Benchmark Libraries for Non-Classical Logics:} To train the models, the project will generate a massive dataset of non-classical formulas across the $C_n$ hierarchy, intuitionistic logic, and modal systems, mapping formulas to their corresponding RNmatrix search paths and minimal countermodels. This will serve as a permanent benchmark library for future AI-driven ATP systems.
-    \item \textbf{Accelerated Formal Verification for Specialized Systems:} Non-classical logics are critical for verifying distributed networks (modal logic), cryptographic protocols (intuitionistic logic), and database systems handling contradictory data (paraconsistent logic). Providing an order-of-magnitude speedup in these domains will make practical formal verification viable for complex, safety-critical industrial applications that classical SAT/SMT tools cannot naturally handle.
+    \item \textbf{A Standardized API for AI-Guided Semantic Provers.} The project will result in an open-source, modular extension to the TRiNity engine. By standardizing the interface through which neural models pass valuation and row heuristics to SMT back-ends, we establish an extensible infrastructure that allows other researchers to swap in different neural architectures (e.g., Graph Transformers vs. Reinforcement Learning agents).
+    \item \textbf{Universal Benchmark Libraries for Non-Classical Logics.} To train the models, the project will generate a massive dataset of non-classical formulas across the $C_n$ hierarchy, intuitionistic logic, and modal systems, mapping formulas to their corresponding RNmatrix search paths and minimal countermodels. This will serve as a permanent benchmark library for future AI-driven ATP systems.
+    \item \textbf{Accelerated Formal Verification for Specialized Systems.} Non-classical logics are critical for verifying distributed networks (modal logic), cryptographic protocols (intuitionistic logic), and database systems handling contradictory data (paraconsistent logic). Providing an order-of-magnitude speedup in these domains will make practical formal verification viable for complex, safety-critical industrial applications that classical SAT/SMT tools cannot naturally handle.
 \end{itemize}
 
-\paragraph*{Risk Analysis \& Mitigation Strategies}
+\paragraph*{Risk Analysis \& Mitigation Strategies.}
 Given the interdisciplinary nature of fusing deep learning models with formal symbolic reasoning, several technical and structural risks have been identified alongside concrete mitigation pathways.
 
 %\begin{table}[htbp]
@@ -299,11 +312,11 @@ Given the interdisciplinary nature of fusing deep learning models with formal sy
 %\end{tabular}
 %\end{table}
 \begin{enumerate}
-    \item \textbf{The Data Sparsity Challenge:} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data. 
+    \item \textbf{The Data Sparsity Challenge.} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data. 
     \\ \textit{Mitigation:} We will implement a synthetic formula generator that systematically construct valid and invalid formulas by mutating known matrix properties, thereby creating a balanced and rich training space.
-    \item \textbf{Inference Overhead vs. Prover Speed:} Complex graph or transformer model passes could introduce a runtime overhead that cancels out the speedups gained by pruning the SMT search space.
+    \item \textbf{Inference Overhead vs. Prover Speed.} Complex graph or transformer model passes could introduce a runtime overhead that cancels out the speedups gained by pruning the SMT search space.
     \\ \textit{Mitigation:} Models will be aggressively quantized and distilled into lightweight edge architectures. Furthermore, neural prediction will only trigger at specified structural decision points (e.g., when encountering heavily quantified row constraints or multi-level modal jumps).
-    \item \textbf{Heuristic Misdirection (Hallucination):} The neural model might predict faulty row selections or misleading valuation biases, guiding the prover into highly inefficient search paths.
+    \item \textbf{Heuristic Misdirection (Hallucination).} The neural model might predict faulty row selections or misleading valuation biases, guiding the prover into highly inefficient search paths.
     \\ \textit{Mitigation:} Because soundness and completeness are fully decoupled from the neural layer, bad predictions never compromise proof integrity. If a search path exceeds a localized timeout, the prover automatically dampens the neural weights and defaults to standard SMT backtracking.
 \end{enumerate}
 
@@ -397,6 +410,14 @@ The proposed budget is directly tied to the core objectives of the project, focu
 
 \begin{enumerate}
 
-\copubsitemref{Elaine}{Title}{Venue}{doi}
+\copubsitemref{R. R. Leme, C. Olarte, E. Pimentel}{Efficient Decision Procedures for RNmatrix Semantics}{LSFA 2026}{https://arxiv.org/abs/2605.01845}
+
+\copubsitemref{R. R. Leme, C. Olarte, E. Pimentel, M. E. Coniglio}{The Modal Cube Revisited: Semantics without Worlds}{TABLEAUX 2025}{https://doi.org/10.1007/978-3-032-06085-3\textunderscore10}
+
+\copubsitemref{E. Pimentel, C. Olarte, T. Lang, R. Freiman, C. Ferm\"{u}ller}{Playing with modalities}{CSL 2025}{https://doi.org/10.4230/LIPIcs.CSL.2025.4} 
+
+\copubsitemref{S. Marin, D. Miller, E. Pimentel, M. Volpe}{From axioms to synthetic inference rules via focusing}{Annals of Pure and Applied Logic Volume 173, Issue 5, 2022}{https://doi.org/10.1016/j.apal.2022.103091}
+
+\copubsitemref{K. Chaudhuri, J. Despeyroux, C. Olarte, E. Pimentel}{Hybrid Linear Logic, revisited}{MSCS Volume 29 Issue 8, pp. 1151-1176, 2019}{https://doi.org/10.1017/S0960129518000439}
 \end{enumerate}
 \end{document}
