@@ -98,11 +98,11 @@ The French Team consists of members of the {\sc PARTOUT} project which is joint 
 \begin{itemize}[noitemsep]
 \fmemb{PI: \textbf{Kaustuv Chaudhuri}}{Junior researcher (CRHC)}{kaustuv.chaudhuri@inria.fr}{\sacaddr}
 
-\fmemb{Dale Miller}{Senior researcher (DRHC)}{dale.miller@inria.fr}{\sacaddr}
+\fmemb{Dale Miller}{Senior researcher (DRCE)}{dale.miller@inria.fr}{\sacaddr}
 
 \fmemb{Lutz Stra\ss burger}{Senior researcher (DR)}{lutz@lix.polytechnique.fr}{\sacaddr}
 
-\fmemb{Beniamino Accattoli}{Junior researcher (CR)}{beniamino.accattoli@inria.fr}{\sacaddr}
+\fmemb{Ambroise Lafont}{Assistant professor}{ambroise.lafonte@polytechnique.edu}{\sacaddr}
 
 \fmemb{Victoria Barrett}{Postdoc}{victoria.barrett@inria.fr}{\sacaddr}
 
@@ -151,21 +151,21 @@ WC1E 6EA London, UK
 \subsection*{2. The Research Project}
 
 \paragraph{State of the Art.}
-Over the past few years, we have developed several automated reasoning methods for non-classical logics. These methods follow two complementary approaches. The first is proof-theoretic and is based on deductive rules, particularly sequent calculi. The second is semantic and relies on finite-valued non-deterministic matrices, or RNmatrices, and restricted classes of valuations.
+Over the past few years, we have developed several automated reasoning methods for non-classical logics (see e.g.~\ref{ref:maetning}). These methods follow two complementary approaches. The first is proof-theoretic and is based on deductive rules, particularly sequent calculi. The second is semantic and relies on finite-valued non-deterministic matrices, or RNmatrices, and restricted classes of valuations.
 
-Our proof-theoretic methods have been implemented in rewriting logic, using rewriting and narrowing as the underlying computational mechanisms (see e.g.~\ref{ref:rew}). In this setting, the inference rules of a sequent calculus are represented as rewrite rules, and the search for a derivation is reduced to a reachability problem. The same reflective infrastructure can also be used to reason about the proof system itself, for instance, to establish admissibility, invertibility, identity expansion, and cut elimination.
+Our proof-theoretic methods have been implemented in deep inference systems (see~\ref{ref:nested1}, \ref{ref:nested2}) or rewriting logic, using rewriting and narrowing as the underlying computational mechanisms (see e.g.~\ref{ref:rew}). In this setting, the inference rules of a sequent calculus are represented as rewrite rules, and the search for a derivation is reduced to a reachability problem. The same reflective infrastructure can also be used to reason about the proof system itself, for instance, to establish admissibility, invertibility, identity expansion, and cut elimination.
 
 Our semantic methods generate finite truth tables or encode the corresponding valuation constraints into satisfiability-modulo-theories, or SMT, problems. In recent work, we developed modular Nmatrix-based decision procedures for modal logics, with a companion prover, TRiNity (see~\ref{ref:Trinity} and~\ref{ref:cube}). These procedures search for partial valuations that satisfy the semantic dependencies imposed by the logic. When a formula is not valid, the resulting valuations can be used to construct a countermodel and, in the modal setting, to recover an associated Kripke-style structure.
 
 Although these approaches provide formally justified decision and semi-decision procedures, their efficiency remains highly dependent on a number of heuristic choices.
-
+%
 For sequent systems, proof search depends on decisions such as which inference rule to apply, which occurrence of a formula should be selected as principal, which pending goal should be explored first, and which previously established lemmas should be made available. Poor choices may produce unnecessarily large search trees, repeated subproblems, or non-terminating branches.
-
+%
 For RNmatrix-based methods, the procedure must explore potentially large spaces of partial valuations. Its performance depends on the order in which subformulas are considered, the truth values assigned to them, and the selection of supporting valuations required by the semantic dependencies. When the problem is translated into SMT, similar decisions determine the branching behavior of the solver.
 
 A further difficulty concerns the implementation of the SMT encodings. Semantically equivalent representations may behave very differently depending on the solver and the class of formulas under consideration. Truth values may, for example, be represented using algebraic datatypes, bit vectors, integers, or collections of Boolean variables. Functions and semantic relations may be encoded using uninterpreted functions, arrays, finite maps, or explicit Boolean constraints. Choosing an appropriate representation and solver configuration currently requires significant expert knowledge and manual experimentation.
 
-Finally, the existing implementations are primarily research prototypes. Making them accessible to a wider community requires additional work on parsers, user interfaces, interoperability, visualization, and explanation facilities. In particular, users should be able to inspect a generated sequent derivation, understand why a proof attempt failed, examine a falsifying valuation, and visualize the corresponding countermodel.
+Finally, the existing implementations are primarily research prototypes. Making them accessible to a wider community requires additional work on parsers, user interfaces, interoperability, visualization, and explanation facilities, possibly exposing direct manipulation techniques to the user using recent advances in user interfaces for interactive theorem proving~\ref{ref:linking}. In particular, users should be able to inspect a generated sequent derivation, understand why a proof attempt failed, examine a falsifying valuation, and visualize the corresponding countermodel. In this regard we plan to expand on the distributed and trustless assertion recording proposal DAMF pioneered by members of this team~\ref{ref:damf}.
 
 \paragraph{Research programme.}
 The central hypothesis of this project is that artificial intelligence can substantially improve the efficiency and usability of these automated reasoning procedures without compromising their logical guarantees.
@@ -288,11 +288,11 @@ Given the interdisciplinary nature of fusing deep learning models with formal sy
 %\end{table}
 \begin{enumerate}
     \item \textbf{The Data Sparsity Challenge.} Unlike classical logic, standard libraries for non-classical systems (like the ILTP library) are relatively small. Training deep neural networks requires massive quantities of labeled data.
-    \\ \textit{Mitigation:} We will implement a synthetic formula generator that systematically construct valid and invalid formulas by mutating known matrix properties, thereby creating a balanced and rich training space.
+    \\[1ex] \textit{Mitigation:} We will implement a synthetic formula generator that systematically construct valid and invalid formulas by mutating known matrix properties, thereby creating a balanced and rich training space.
     \item \textbf{Inference Overhead vs. Prover Speed.} Complex graph or transformer model passes could introduce a runtime overhead that cancels out the speedups gained by pruning the SMT search space.
-    \\ \textit{Mitigation:} Models will be aggressively quantized and distilled into lightweight edge architectures. Furthermore, neural prediction will only trigger at specified structural decision points (e.g., when encountering heavily quantified row constraints or multi-level modal jumps).
+    \\[1ex] \textit{Mitigation:} Models will be aggressively quantized and distilled into lightweight edge architectures. Furthermore, neural prediction will only trigger at specified structural decision points (e.g., when encountering heavily quantified row constraints or multi-level modal jumps).
     \item \textbf{Heuristic Misdirection (Hallucination).} The neural model might predict faulty row selections or misleading valuation biases, guiding the prover into highly inefficient search paths.
-    \\ \textit{Mitigation:} Because soundness and completeness are fully decoupled from the neural layer, bad predictions never compromise proof integrity. If a search path exceeds a localized timeout, the prover automatically dampens the neural weights and defaults to standard SMT backtracking.
+    \\[1ex] \textit{Mitigation:} Because soundness and completeness are fully decoupled from the neural layer, bad predictions never compromise proof integrity. If a search path exceeds a localized timeout, the prover automatically dampens the neural weights and defaults to standard SMT backtracking.
 \end{enumerate}
 
 \pagebreak
@@ -359,7 +359,7 @@ The proposed budget is directly tied to the core objectives of the project, focu
         \item \textit{Conference Attendance (\euro 5,000):} Allocates \euro 2,500 each for two PhD students to present research results at major international peer-reviewed conferences. This includes registration fees (\euro 800), transportation (\euro 700), and accommodation/subsistence (\euro 1,000).
     \end{itemize}
 
-    \item \textbf{Equipment (\euro 6,000):} To support the computational overhead of training Graph Neural Networks (GNNs) and benchmarking Large Language Models (LLMs) locally, the project requires 2 high-performance laptops equipped with dedicated GPUs and significant memory, budgeted at approximately \euro 3,000 each (given current pricing trends).
+    \item \textbf{Equipment (\euro 6,000):} To support the computational overhead of training Graph Neural Networks (GNNs) and benchmarking Large Language Models (LLMs) locally, the project requires 2 high-performance computers (ideal) equipped with state-of-the-art GPUs and significant memory, budgeted at approximately \euro 3,000 each (given current pricing trends).
 
     \item \textbf{Consumables and Materials (\euro 200):} Covers essential day-to-day coordination materials for workspace collaboration (whiteboards, markers, and paper) as well as dedicated hardware (microphones and high-definition cameras) to ensure seamless, high-quality video-conferencing during hybrid team meetings.
 
@@ -378,15 +378,15 @@ The proposed budget is directly tied to the core objectives of the project, focu
 
 \begin{enumerate}[noitemsep]
 
-\copubsitemfullref{F. Al Wardani, K. Chaudhuri, and D. Miller}{About Trust and Proof: An experimental framework for heterogeneous verification}{The Practice of Formal Methods: Part II}{https://dx.doi.org/10.1007/978-3-031-66673-5\_9}{04710949}
+\copubsitemfullref{F. Al Wardani, K. Chaudhuri and D. Miller}{Formal Reasoning using Distributed Assertions}{Int. Symposium on Frontiers of Combining Systems (FroCoS) 2023}{https://dx.doi.org/10.1007/978-3-031-43369-6\_10}{04167922v2}\label{ref:damf}
 
-\copubsitemfullref{F. Al Wardani, K. Chaudhuri and D. Miller}{Formal Reasoning using Distributed Assertions}{Int. Symposium on Frontiers of Combining Systems (FroCoS) 2023}{https://dx.doi.org/10.1007/978-3-031-43369-6\_10}{04167922v2}
+\copubsitemfullref{K. Chaudhuri}{Subformula Linking for Intuitionistic Logic with Application to Type Theory}{Int. Conference on Automated Deduction (CADE) 2021}{https://dx.doi.org/10.1007/978-3-030-79876-5\_12}{03528659}\label{ref:linking}
 
-\copubsitemfullref{K. Chaudhuri}{Subformula Linking for Intuitionistic Logic with Application to Type Theory}{Int. Conference on Automated Deduction (CADE) 2021}{https://dx.doi.org/10.1007/978-3-030-79876-5\_12}{03528659}
+\copubsitemref{K. Chaudhuri, S. Marin, and L. Straßburger}{Modular Focused Proof Systems for Intuitionistic Modal Logics}{Formal Structures for Computation and Deduction (FSCD) 2016}{https://dx.doi.org/10.4230/LIPIcs.FSCD.2016.16}\label{ref:nested1}
 
-\copubsitemref{K. Chaudhuri, S. Marin, and L. Straßburger}{Modular Focused Proof Systems for Intuitionistic Modal Logics}{Formal Structures for Computation and Deduction (FSCD) 2016}{https://dx.doi.org/10.4230/LIPIcs.FSCD.2016.16}
+\copubsitemfullref{K. Chaudhuri, S. Marin, and L. Straßburger}{Focused and Synthetic Nested Sequents}{Int. Conference on Foundations of Software Science and Computation Structures (FoSSaCS) 2016}{https://dx.doi.org/10.1007/978-3-662-49630-5\_23}{01417618}\label{ref:nested2}
 
-\copubsitemfullref{K. Chaudhuri, S. Marin, and L. Straßburger}{Focused and Synthetic Nested Sequents}{Int. Conference on Foundations of Software Science and Computation Structures (FoSSaCS) 2016}{https://dx.doi.org/10.1007/978-3-662-49630-5\_23}{01417618}
+\copubsitemref{T. Brock-Nannestad and K. Chaudhuri}{Disproving Using the Inverse Method by Iterated Refinement of Finite Approximations}{Automated Reasoning with Analytic Tableaux and Related Methods (TABLEAUX) 2015}{https://dx.doi.org/10.1007/978-3-319-24312-2\_11}\label{ref:maetning}
 
 \end{enumerate}
 
