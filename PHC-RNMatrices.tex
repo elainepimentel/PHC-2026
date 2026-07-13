@@ -30,8 +30,8 @@
 
 \def\myperiod{.}
 
-\def\halwebref#1{\href{https://hal.inria.fr/hal-#1}%
-     {{https://hal.inria.fr/hal-#1}}}
+\def\halwebref#1{\href{https://inria.hal.science/hal-#1}%
+     {{https://inria.hal.science/hal-#1}}}
 
 \def\webref#1{\href{#1}%
      {{#1}}}
@@ -62,18 +62,14 @@
 
 \newcommand{\memb}[4]{\item #1, \emph{#2}, {\tt #3}\\ #4}
 \newcommand{\fmemb}[4]{\item #1, \emph{#2}, {\tt #3}}
-\newcommand{\sacaddr}{1 rue Honor\'{e} d'Estienne d'Orves,
-%B�timent Alan Turin,
-%Campus de l'\'{e}cole Polytechnique,
-Inria \& \'{E}cole Polytechnique,
-91120 Palaiseau,
-France}
-\newcommand{\sacaddrb}{Inria Saclay, 1 rue Honor\'{e} d'Estienne d'Orves,
-B\^{a}timent Alan Turin,
-Campus de l'\'{E}cole Polytechnique,
-%Inria \& \'{e}cole Polytechnique,
-91120 Palaiseau,
-France}
+\newcommand{\sacaddr}{%
+  Inria Saclay, 1 r. Honoré d'Estienne d'Orves, %
+  91120 Palaiseau, France}
+\newcommand{\sacaddrb}{%
+  Inria Saclay, 1 rue Honor\'{e} d'Estienne d'Orves, %
+  91120 Palaiseau, %
+  France
+}
 
 \begin{document}
 
@@ -97,10 +93,10 @@ Automated theorem proving (ATP) is a cornerstone of modern software verification
 
 \subsubsection*{French Team.}
 
-The French Team consists of members of the {\sc Partout} project which is joint between Inria Saclay and LIX (UMR 7161) at \'{E}cole Polytechnique. This team brings extensive expertise in all areas of logic, formal verification, and proof theory, which is crucial for the success of the project.
+The French Team consists of members of the {\sc PARTOUT} project which is joint between Inria Saclay and LIX (UMR 7161) at \'{E}cole Polytechnique. This team brings extensive expertise in all areas of logic, formal verification, and proof theory, which is crucial for the success of the project.
 
 \begin{itemize}[noitemsep]
-\fmemb{PI: \textbf{Kaustuv Chaudhuri}}{Junior researcher (CRHC)}{kaustuv@chaudhuri.info}{\sacaddr}
+\fmemb{PI: \textbf{Kaustuv Chaudhuri}}{Junior researcher (CRHC)}{kaustuv.chaudhuri@inria.fr}{\sacaddr}
 
 \fmemb{Dale Miller}{Senior researcher (DRHC)}{dale.miller@inria.fr}{\sacaddr}
 
@@ -336,7 +332,7 @@ Given the interdisciplinary nature of fusing deep learning models with formal sy
 Type of expense & Amount (in \euro) & Description \\
 \hline
 Travel & 22 800  & mutual visits and conference attendance\\
-Equipment & 3 000 & 2 laptops \\
+Equipment & 6 000 & 2 AI-capable computers \\
 Essential consumable materials & 200 & \\
 Documentation &  - & \\
 Publication & 2 000 & \\
@@ -344,7 +340,7 @@ Publication & 2 000 & \\
 Research grants & - & \\ %%two one-month research visits abroad\\
 Other & 11 000 & workshop organisation\\
 \hline
-\bf Total & \bf 39 000 & \\
+\bf Total & \bf 42 000 & \\
 \hline
 \end{tabular}
 
@@ -363,7 +359,7 @@ The proposed budget is directly tied to the core objectives of the project, focu
         \item \textit{Conference Attendance (\euro 5,000):} Allocates \euro 2,500 each for two PhD students to present research results at major international peer-reviewed conferences. This includes registration fees (\euro 800), transportation (\euro 700), and accommodation/subsistence (\euro 1,000).
     \end{itemize}
 
-    \item \textbf{Equipment (\euro 3,000):} To support the computational overhead of training Graph Neural Networks (GNNs) and benchmarking Large Language Models (LLMs) locally, the project requires 2 high-performance laptops equipped with dedicated GPU acceleration capabilities, budgeted at approximately \euro 1,500 each.
+    \item \textbf{Equipment (\euro 6,000):} To support the computational overhead of training Graph Neural Networks (GNNs) and benchmarking Large Language Models (LLMs) locally, the project requires 2 high-performance laptops equipped with dedicated GPUs and significant memory, budgeted at approximately \euro 3,000 each (given current pricing trends).
 
     \item \textbf{Consumables and Materials (\euro 200):} Covers essential day-to-day coordination materials for workspace collaboration (whiteboards, markers, and paper) as well as dedicated hardware (microphones and high-definition cameras) to ensure seamless, high-quality video-conferencing during hybrid team meetings.
 
@@ -376,18 +372,27 @@ The proposed budget is directly tied to the core objectives of the project, focu
     \end{itemize}
 \end{itemize}
 
-\subsection*{Publications of PIs}
+\subsection*{Relevant Publications of PIs}
 
 \subsubsection*{a. Kaustuv Chaudhuri (PI of the French team)}
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
 
-\copubsitemfullref{Kaustuv}{Title}{Venue}{doi}{HAL\#}
+\copubsitemfullref{F. Al Wardani, K. Chaudhuri, and D. Miller}{About Trust and Proof: An experimental framework for heterogeneous verification}{The Practice of Formal Methods: Part II}{https://dx.doi.org/10.1007/978-3-031-66673-5\_9}{04710949}
+
+\copubsitemfullref{F. Al Wardani, K. Chaudhuri and D. Miller}{Formal Reasoning using Distributed Assertions}{Int. Symposium on Frontiers of Combining Systems (FroCoS) 2023}{https://dx.doi.org/10.1007/978-3-031-43369-6\_10}{04167922v2}
+
+\copubsitemfullref{K. Chaudhuri}{Subformula Linking for Intuitionistic Logic with Application to Type Theory}{Int. Conference on Automated Deduction (CADE) 2021}{https://dx.doi.org/10.1007/978-3-030-79876-5\_12}{03528659}
+
+\copubsitemref{K. Chaudhuri, S. Marin, and L. Straßburger}{Modular Focused Proof Systems for Intuitionistic Modal Logics}{Formal Structures for Computation and Deduction (FSCD) 2016}{https://dx.doi.org/10.4230/LIPIcs.FSCD.2016.16}
+
+\copubsitemfullref{K. Chaudhuri, S. Marin, and L. Straßburger}{Focused and Synthetic Nested Sequents}{Int. Conference on Foundations of Software Science and Computation Structures (FoSSaCS) 2016}{https://dx.doi.org/10.1007/978-3-662-49630-5\_23}{01417618}
+
 \end{enumerate}
 
 \subsubsection*{a. Elaine Pimentel (PI of the British team)}
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
 \setcounter{enumi}{5}
 
 \copubsitemref{R. R. Leme, C. Olarte, E. Pimentel}{Efficient Decision Procedures for RNmatrix Semantics}{LSFA 2026}{https://arxiv.org/abs/2605.01845}\label{ref:Trinity}
